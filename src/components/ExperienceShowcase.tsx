@@ -23,7 +23,7 @@ export const ExperienceShowcase: React.FC = () => {
           </p>
         </div>
 
-        {/* 3 Callout Cards: Balance, Multi-channel Identity, Verification */}
+        {/* 3 Callout Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           <div className="bg-white border-3 border-brand-inkBlack rounded-2xl p-6 shadow-brutal card-brutal-interactive">
             <div className="w-12 h-12 rounded-xl bg-brand-lime border-2 border-brand-inkBlack flex items-center justify-center font-black text-xl mb-4 shadow-brutal-xs">
@@ -67,8 +67,9 @@ export const ExperienceShowcase: React.FC = () => {
           {/* Tab Selector Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3 mb-10 pb-6 border-b-2 border-brand-inkBlack">
             <button
+              type="button"
               onClick={() => setActiveTab('send')}
-              className={`px-5 py-2.5 rounded-xl font-black text-sm border-2 border-brand-inkBlack transition-all flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-xl font-black text-sm border-2 border-brand-inkBlack transition-all flex items-center gap-2 cursor-pointer ${
                 activeTab === 'send'
                   ? 'bg-brand-lavender text-brand-inkBlack shadow-brutal-sm -translate-y-0.5'
                   : 'bg-brand-warmCream text-stone-700 hover:bg-stone-100'
@@ -80,8 +81,9 @@ export const ExperienceShowcase: React.FC = () => {
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveTab('receive')}
-              className={`px-5 py-2.5 rounded-xl font-black text-sm border-2 border-brand-inkBlack transition-all flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-xl font-black text-sm border-2 border-brand-inkBlack transition-all flex items-center gap-2 cursor-pointer ${
                 activeTab === 'receive'
                   ? 'bg-brand-cyan text-brand-inkBlack shadow-brutal-sm -translate-y-0.5'
                   : 'bg-brand-warmCream text-stone-700 hover:bg-stone-100'
@@ -93,8 +95,9 @@ export const ExperienceShowcase: React.FC = () => {
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveTab('track')}
-              className={`px-5 py-2.5 rounded-xl font-black text-sm border-2 border-brand-inkBlack transition-all flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-xl font-black text-sm border-2 border-brand-inkBlack transition-all flex items-center gap-2 cursor-pointer ${
                 activeTab === 'track'
                   ? 'bg-brand-lime text-brand-inkBlack shadow-brutal-sm -translate-y-0.5'
                   : 'bg-brand-warmCream text-stone-700 hover:bg-stone-100'
@@ -111,7 +114,7 @@ export const ExperienceShowcase: React.FC = () => {
             {/* Left Content */}
             <div className="lg:col-span-7 flex flex-col items-start">
               {activeTab === 'send' && (
-                <div className="animate-in fade-in duration-200">
+                <div className="animate-fadeIn">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-lavender/30 border border-brand-inkBlack rounded-lg text-xs font-black uppercase mb-3">
                     Luồng chuyển stablecoin
                   </div>
@@ -147,7 +150,7 @@ export const ExperienceShowcase: React.FC = () => {
               )}
 
               {activeTab === 'receive' && (
-                <div className="animate-in fade-in duration-200">
+                <div className="animate-fadeIn">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-cyan/30 border border-brand-inkBlack rounded-lg text-xs font-black uppercase mb-3">
                     Luồng nhận stablecoin
                   </div>
@@ -168,7 +171,7 @@ export const ExperienceShowcase: React.FC = () => {
               )}
 
               {activeTab === 'track' && (
-                <div className="animate-in fade-in duration-200">
+                <div className="animate-fadeIn">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-lime/30 border border-brand-inkBlack rounded-lg text-xs font-black uppercase mb-3">
                     Quản lý số dư & Lịch sử
                   </div>
@@ -188,17 +191,25 @@ export const ExperienceShowcase: React.FC = () => {
                 </div>
               )}
 
+              {/* Interaction Hint */}
+              <div className="text-xs font-extrabold text-stone-700 bg-brand-paleYellow px-3 py-1.5 rounded-lg border border-brand-inkBlack mb-3">
+                💡 Mẹo: Bạn có thể bấm trực tiếp các nút trên màn hình điện thoại bên phải để trải nghiệm luồng thao tác.
+              </div>
+
               {/* Disclaimer */}
               <div className="text-xs font-bold text-stone-500 italic">
                 * {t.experience.illustrationNotice}
               </div>
             </div>
 
-            {/* Right Interactive Mockup Screen */}
+            {/* Right Interactive Mockup Screen (Two-way synced with outer tabs) */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="w-full max-w-[320px] aspect-[9/18] rounded-[40px] bg-brand-inkBlack border-4 border-brand-inkBlack p-2.5 shadow-brutal-lg">
+              <div className="w-full max-w-[330px] aspect-[9/18] rounded-[40px] bg-brand-inkBlack border-4 border-brand-inkBlack p-2.5 shadow-brutal-lg">
                 <div className="w-full h-full rounded-[32px] overflow-hidden border-2 border-brand-inkBlack bg-brand-warmCream">
-                  <AppMockupScreens activeTab={activeTab} />
+                  <AppMockupScreens
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                  />
                 </div>
               </div>
             </div>

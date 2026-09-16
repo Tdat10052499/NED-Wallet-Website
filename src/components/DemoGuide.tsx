@@ -9,19 +9,31 @@ export const DemoGuide: React.FC = () => {
 
   const handleCopyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(siteConfig.contactEmail);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(siteConfig.contactEmail);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+        return;
+      }
     } catch {
-      // Fallback if clipboard API fails
+      // Proceed to fallback
+    }
+
+    try {
       const textarea = document.createElement('textarea');
       textarea.value = siteConfig.contactEmail;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-999999px';
+      textarea.style.top = '-999999px';
       document.body.appendChild(textarea);
+      textarea.focus();
       textarea.select();
       document.execCommand('copy');
       document.body.removeChild(textarea);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Fallback failed
     }
   };
 
@@ -31,7 +43,7 @@ export const DemoGuide: React.FC = () => {
   )}&body=${encodeURIComponent(mailBody)}`;
 
   return (
-    <section id="demo" className="relative w-full bg-brand-warmCream text-brand-inkBlack py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack">
+    <section id="demo" className="scroll-mt-16 relative w-full bg-brand-warmCream text-brand-inkBlack py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
@@ -102,7 +114,7 @@ export const DemoGuide: React.FC = () => {
               <div className="flex flex-col gap-3">
                 <a
                   href={mailtoLink}
-                  className="btn-brutal-primary w-full py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-brutal-xs"
+                  className="btn-brutal-primary w-full py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-brutal-xs cursor-pointer"
                 >
                   <Mail className="w-4 h-4" />
                   <span>{t.demoGuide.btnMailto}</span>
@@ -111,7 +123,7 @@ export const DemoGuide: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleCopyEmail}
-                  className={`btn-brutal w-full py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-brutal-xs transition-colors ${
+                  className={`btn-brutal w-full py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-brutal-xs transition-colors cursor-pointer ${
                     copied
                       ? 'bg-brand-lime text-brand-inkBlack'
                       : 'bg-brand-warmCream text-brand-inkBlack'
@@ -120,7 +132,7 @@ export const DemoGuide: React.FC = () => {
                 >
                   {copied ? (
                     <>
-                      <Check className="w-4 h-4 text-emerald-800" />
+                      <Check className="w-4 h-4 text-emerald-800 stroke-[3]" />
                       <span>{t.demoGuide.btnCopied}</span>
                     </>
                   ) : (

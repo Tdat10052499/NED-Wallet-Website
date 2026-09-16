@@ -35,7 +35,7 @@
 @layer components {
   /* Neo-brutalist buttons */
   .btn-brutal {
-    @apply relative inline-flex items-center justify-center font-bold transition-all duration-150 border-2 sm:border-3 border-brand-inkBlack select-none;
+    @apply relative inline-flex items-center justify-center font-black transition-all duration-150 border-2 sm:border-3 border-brand-inkBlack select-none cursor-pointer;
     box-shadow: 4px 4px 0px #111111;
   }
 
@@ -95,6 +95,103 @@
     @apply inline-flex items-center gap-1.5 px-3 py-1 font-bold text-xs uppercase tracking-wider border-2 border-brand-inkBlack rounded-full;
     box-shadow: 2px 2px 0px #111111;
   }
+}
+
+/* Fluid Keyframe Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scanLaser {
+  0% {
+    top: 5%;
+    opacity: 0.8;
+  }
+  50% {
+    top: 90%;
+    opacity: 1;
+  }
+  100% {
+    top: 5%;
+    opacity: 0.8;
+  }
+}
+
+@keyframes progressBarFill {
+  0% {
+    width: 0%;
+  }
+  40% {
+    width: 65%;
+  }
+  80% {
+    width: 90%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
+
+@keyframes floatBob {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scanLaser {
+  animation: scanLaser 2.2s ease-in-out infinite;
+}
+
+.animate-progress {
+  animation: progressBarFill 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 1.8s ease-in-out infinite;
+}
+
+.animate-floatBob {
+  animation: floatBob 3s ease-in-out infinite;
 }
 
 /* Reduced motion preference */

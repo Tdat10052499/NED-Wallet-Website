@@ -13,18 +13,31 @@ export const BuildersPage: React.FC<BuildersPageProps> = ({ onNavigate }) => {
 
   const handleCopyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(siteConfig.contactEmail);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(siteConfig.contactEmail);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+        return;
+      }
     } catch {
+      // Proceed to fallback
+    }
+
+    try {
       const textarea = document.createElement('textarea');
       textarea.value = siteConfig.contactEmail;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-999999px';
+      textarea.style.top = '-999999px';
       document.body.appendChild(textarea);
+      textarea.focus();
       textarea.select();
       document.execCommand('copy');
       document.body.removeChild(textarea);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Fallback failed
     }
   };
 
