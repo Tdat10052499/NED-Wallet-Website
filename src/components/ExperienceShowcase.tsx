@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ArrowDownLeft, ArrowUpRight, History, QrCode, Phone, Wallet, ShieldCheck, Check } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { AppMockupScreens } from '../assets/AppMockupScreens';
-import { PhoneTiltWrapper } from './PhoneTiltWrapper';
 
 export const ExperienceShowcase: React.FC = () => {
   const { t } = useI18n();
@@ -203,18 +202,16 @@ export const ExperienceShowcase: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Interactive Mockup Screen with 3D cursor tracking (Two-way synced with outer tabs) */}
+            {/* Right Interactive Mockup Screen (Two-way synced with outer tabs, stable & non-tilting) */}
             <div className="lg:col-span-5 flex justify-center">
-              <PhoneTiltWrapper className="w-full max-w-[330px] aspect-[9/18]">
-                <div className="w-full h-full rounded-[40px] bg-brand-inkBlack border-4 border-brand-inkBlack p-2.5 [transform-style:preserve-3d]">
-                  <div className="w-full h-full rounded-[32px] overflow-hidden border-2 border-brand-inkBlack bg-brand-warmCream [transform:translateZ(10px)]">
-                    <AppMockupScreens
-                      activeTab={activeTab}
-                      onTabChange={setActiveTab}
-                    />
-                  </div>
+              <div className="w-full max-w-[330px] aspect-[9/18] rounded-[40px] bg-brand-inkBlack border-4 border-brand-inkBlack p-2.5 shadow-brutal-lg">
+                <div className="w-full h-full rounded-[32px] overflow-hidden border-2 border-brand-inkBlack bg-brand-warmCream">
+                  <AppMockupScreens
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                  />
                 </div>
-              </PhoneTiltWrapper>
+              </div>
             </div>
           </div>
         </div>
