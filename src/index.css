@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-deepPurple: #0E0625;
+    --brand-darkSurface: #1A1035;
+    --brand-lavender: #B497F0;
+    --brand-warmCream: #F0EBDD;
+    --brand-inkBlack: #111111;
+    --brand-offWhite: #F8F6FF;
+    --brand-cyan: #08CEE3;
+    --brand-lime: #D5FF00;
+    --brand-paleYellow: #FFF3A6;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color: #111111;
+  }
+
+  body {
+    overflow-x: hidden;
+    background-color: var(--brand-deepPurple);
+  }
+
+  /* Keyboard accessibility */
+  :focus-visible {
+    outline: 3px solid #08CEE3 !important;
+    outline-offset: 3px !important;
+  }
+}
+
+@layer components {
+  /* Neo-brutalist buttons */
+  .btn-brutal {
+    @apply relative inline-flex items-center justify-center font-bold transition-all duration-150 border-2 sm:border-3 border-brand-inkBlack select-none;
+    box-shadow: 4px 4px 0px #111111;
+  }
+
+  .btn-brutal:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #111111;
+  }
+
+  .btn-brutal:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #111111;
+  }
+
+  .btn-brutal-primary {
+    @apply btn-brutal bg-brand-lavender text-brand-inkBlack;
+  }
+
+  .btn-brutal-secondary {
+    @apply btn-brutal bg-brand-warmCream text-brand-inkBlack;
+  }
+
+  .btn-brutal-lime {
+    @apply btn-brutal bg-brand-lime text-brand-inkBlack;
+  }
+
+  .btn-brutal-cyan {
+    @apply btn-brutal bg-brand-cyan text-brand-inkBlack;
+  }
+
+  .btn-brutal-dark {
+    @apply btn-brutal bg-brand-darkSurface text-brand-offWhite border-brand-inkBlack;
+    box-shadow: 4px 4px 0px #111111;
+  }
+
+  .btn-brutal-dark:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #B497F0;
+  }
+
+  /* Neo-brutalist cards */
+  .card-brutal {
+    @apply border-3 border-brand-inkBlack transition-transform duration-150;
+    box-shadow: 6px 6px 0px #111111;
+  }
+
+  .card-brutal-interactive {
+    @apply card-brutal;
+  }
+
+  .card-brutal-interactive:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px #111111;
+  }
+
+  /* Neo-brutalist tags & pills */
+  .tag-brutal {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 font-bold text-xs uppercase tracking-wider border-2 border-brand-inkBlack rounded-full;
+    box-shadow: 2px 2px 0px #111111;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
