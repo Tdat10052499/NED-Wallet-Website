@@ -18,6 +18,10 @@ export const translations = {
       appBadge: 'Giao diện ứng dụng di động',
       illustrationTag: 'Minh họa trải nghiệm',
     },
+    marquee: {
+      tag: 'Đồng hành & Hệ sinh thái',
+      badge: 'Chuyển động theo cuộn',
+    },
     callouts: {
       balance: 'Số dư rõ ràng',
       balanceDesc: 'Theo dõi USDC thử nghiệm trên Solana Devnet theo thời gian thực.',
@@ -164,6 +168,10 @@ export const translations = {
       ctaSecondary: 'Build with N.E.D',
       appBadge: 'Mobile App Interface',
       illustrationTag: 'Experience Illustration',
+    },
+    marquee: {
+      tag: 'Ecosystem & Community',
+      badge: 'Scroll-linked Motion',
     },
     callouts: {
       balance: 'Clear Balance',

@@ -1,5 +1,5 @@
-import React from 'react';
 import { HeroScene } from '../components/HeroScene';
+import { PartnerMarquee } from '../components/PartnerMarquee';
 import { ExperienceShowcase } from '../components/ExperienceShowcase';
 import { HowItWorks } from '../components/HowItWorks';
 import { StablecoinExplainer } from '../components/StablecoinExplainer';
@@ -16,6 +16,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     <main className="w-full min-h-screen">
       {/* 1. Hero Cinematic & 3D Showcase */}
       <HeroScene onNavigate={onNavigate} />
+
+      {/* 1.5 Neo-Brutalist Partner Marquee Frame */}
+      <PartnerMarquee />
 
       {/* 2. Product Experience Transition & Interactive Tabs */}
       <ExperienceShowcase />
