@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
+import { RevealOnScroll } from './RevealOnScroll';
 
 export const FAQ: React.FC = () => {
   const { t } = useI18n();
@@ -23,17 +24,19 @@ export const FAQ: React.FC = () => {
     <section id="faq" className="scroll-mt-16 relative w-full bg-brand-deepPurple text-brand-offWhite py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-darkSurface border-2 border-brand-lavender text-brand-lavender font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
-            <HelpCircle className="w-3.5 h-3.5 text-brand-cyan" />
-            <span>{t.faq.tag}</span>
+        <RevealOnScroll animation="fade-up">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-darkSurface border-2 border-brand-lavender text-brand-lavender font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
+              <HelpCircle className="w-3.5 h-3.5 text-brand-cyan" />
+              <span>{t.faq.tag}</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-offWhite tracking-tight mb-4">
+              {t.faq.headline}
+            </h2>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-offWhite tracking-tight mb-4">
-            {t.faq.headline}
-          </h2>
-        </div>
+        </RevealOnScroll>
 
-        {/* Accordion List */}
+        {/* Accordion List with Staggered Entrance */}
         <div className="space-y-4">
           {faqItems.map((item, index) => {
             const isOpen = openIndex === index;
@@ -41,10 +44,8 @@ export const FAQ: React.FC = () => {
             const panelId = `faq-panel-${index}`;
 
             return (
-              <div
-                key={index}
-                className="bg-brand-darkSurface border-3 border-brand-inkBlack rounded-2xl overflow-hidden shadow-brutal transition-all"
-              >
+              <RevealOnScroll key={index} animation="fade-up" delay={index * 60}>
+                <div className="bg-brand-darkSurface border-3 border-brand-inkBlack rounded-2xl overflow-hidden shadow-brutal transition-all">
                 <button
                   id={buttonId}
                   aria-expanded={isOpen}
@@ -76,6 +77,7 @@ export const FAQ: React.FC = () => {
                   </div>
                 )}
               </div>
+            </RevealOnScroll>
             );
           })}
         </div>

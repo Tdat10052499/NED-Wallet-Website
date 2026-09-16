@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Sparkles, MousePointerClick, ArrowRightLeft } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
+import { RevealOnScroll } from './RevealOnScroll';
 
 interface PartnerItem {
   id: string;
@@ -137,31 +138,34 @@ export const PartnerMarquee: React.FC = () => {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-5">
-        {/* Header Ribbon Stamp */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-brand-inkBlack text-brand-offWhite font-black text-xs uppercase tracking-wider shadow-brutal-xs">
-            <Sparkles className="w-3.5 h-3.5 text-brand-lime animate-spin" style={{ animationDuration: '6s' }} />
-            <span>{t.marquee.tag}</span>
-          </div>
+        <RevealOnScroll animation="fade-up" delay={0}>
+          {/* Header Ribbon Stamp */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-brand-inkBlack text-brand-offWhite font-black text-xs uppercase tracking-wider shadow-brutal-xs">
+              <Sparkles className="w-3.5 h-3.5 text-brand-lime animate-spin" style={{ animationDuration: '6s' }} />
+              <span>{t.marquee.tag}</span>
+            </div>
 
-          <div className="inline-flex items-center gap-2 text-xs font-black text-brand-inkBlack/80">
-            <ArrowRightLeft className="w-3.5 h-3.5" />
-            <span className="bg-white/90 border-2 border-brand-inkBlack px-3 py-1 rounded-lg shadow-brutal-xs flex items-center gap-1.5">
-              <MousePointerClick className="w-3.5 h-3.5 text-brand-deepPurple" />
-              <span>{t.marquee.badge} • Lăn chuột hoặc kéo để trượt</span>
-            </span>
+            <div className="inline-flex items-center gap-2 text-xs font-black text-brand-inkBlack/80">
+              <ArrowRightLeft className="w-3.5 h-3.5" />
+              <span className="bg-white/90 border-2 border-brand-inkBlack px-3 py-1 rounded-lg shadow-brutal-xs flex items-center gap-1.5">
+                <MousePointerClick className="w-3.5 h-3.5 text-brand-deepPurple" />
+                <span>{t.marquee.badge} • Lăn chuột hoặc kéo để trượt</span>
+              </span>
+            </div>
           </div>
-        </div>
+        </RevealOnScroll>
       </div>
 
       {/* Marquee Box Frame Container */}
-      <div
-        className="relative w-full overflow-hidden py-2 cursor-grab active:cursor-grabbing"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-      >
+      <RevealOnScroll animation="pop" delay={100}>
+        <div
+          className="relative w-full overflow-hidden py-2 cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+        >
         {/* Dynamic Track: Moves SOLELY based on User Scroll & Drag */}
         <div
           ref={trackRef}
@@ -220,6 +224,7 @@ export const PartnerMarquee: React.FC = () => {
           ))}
         </div>
       </div>
+      </RevealOnScroll>
     </section>
   );
 };

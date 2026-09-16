@@ -4,6 +4,7 @@ import { ArrowRight, Sparkles, Shield, Cpu, ChevronRight } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { AppMockupScreens } from '../assets/AppMockupScreens';
 import { PhoneTiltWrapper } from './PhoneTiltWrapper';
+import { RevealOnScroll } from './RevealOnScroll';
 
 interface HeroSceneProps {
   onNavigate: (path: string) => void;
@@ -259,81 +260,93 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ onNavigate }) => {
         {/* Left Column: Headlines, CTAs, Trust Points */}
         <div className="lg:col-span-7 flex flex-col items-start text-left">
           {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-darkSurface border-2 border-brand-lavender text-brand-lavender text-xs font-black uppercase tracking-wider mb-6 shadow-brutal-xs">
-            <span className="w-2.5 h-2.5 rounded-full bg-brand-lime border border-brand-inkBlack animate-ping" />
-            <span>{t.hero.statusBadge}</span>
-          </div>
+          <RevealOnScroll animation="fade-up" delay={0}>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-darkSurface border-2 border-brand-lavender text-brand-lavender text-xs font-black uppercase tracking-wider mb-6 shadow-brutal-xs">
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-lime border border-brand-inkBlack animate-ping" />
+              <span>{t.hero.statusBadge}</span>
+            </div>
+          </RevealOnScroll>
 
           {/* Main Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-brand-offWhite tracking-tight leading-[1.08] mb-6 whitespace-pre-line">
-            {t.hero.headline}
-          </h1>
+          <RevealOnScroll animation="fade-up" delay={80}>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-brand-offWhite tracking-tight leading-[1.08] mb-6 whitespace-pre-line">
+              {t.hero.headline}
+            </h1>
+          </RevealOnScroll>
 
           {/* Description */}
-          <p className="text-base sm:text-lg lg:text-xl text-stone-300 font-medium max-w-2xl leading-relaxed mb-8">
-            {t.hero.description}
-          </p>
+          <RevealOnScroll animation="fade-up" delay={160}>
+            <p className="text-base sm:text-lg lg:text-xl text-stone-300 font-medium max-w-2xl leading-relaxed mb-8">
+              {t.hero.description}
+            </p>
+          </RevealOnScroll>
 
           {/* Action CTAs */}
-          <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <button
-              type="button"
-              onClick={handleHeroDemoClick}
-              className="btn-brutal-primary px-7 py-3.5 rounded-2xl text-base font-black flex items-center justify-center gap-2 shadow-brutal cursor-pointer"
-            >
-              <span>{t.hero.ctaPrimary}</span>
-              <ArrowRight className="w-5 h-5" />
-            </button>
+          <RevealOnScroll animation="fade-up" delay={240}>
+            <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <button
+                type="button"
+                onClick={handleHeroDemoClick}
+                className="btn-brutal-primary px-7 py-3.5 rounded-2xl text-base font-black flex items-center justify-center gap-2 shadow-brutal cursor-pointer"
+              >
+                <span>{t.hero.ctaPrimary}</span>
+                <ArrowRight className="w-5 h-5" />
+              </button>
 
-            <button
-              type="button"
-              onClick={handleHeroBuilderClick}
-              className="btn-brutal-secondary px-6 py-3.5 rounded-2xl text-base font-black flex items-center justify-center gap-2 shadow-brutal cursor-pointer"
-            >
-              <span>{t.hero.ctaSecondary}</span>
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={handleHeroBuilderClick}
+                className="btn-brutal-secondary px-6 py-3.5 rounded-2xl text-base font-black flex items-center justify-center gap-2 shadow-brutal cursor-pointer"
+              >
+                <span>{t.hero.ctaSecondary}</span>
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </RevealOnScroll>
 
           {/* Trust Points */}
-          <div className="mt-10 pt-6 border-t-2 border-brand-lavender/20 grid grid-cols-2 sm:grid-cols-3 gap-4 w-full text-xs font-bold text-stone-300">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-brand-lime flex-shrink-0" />
-              <span>Thao tác quen thuộc</span>
+          <RevealOnScroll animation="fade-up" delay={320} className="w-full">
+            <div className="mt-10 pt-6 border-t-2 border-brand-lavender/20 grid grid-cols-2 sm:grid-cols-3 gap-4 w-full text-xs font-bold text-stone-300">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-brand-lime flex-shrink-0" />
+                <span>Thao tác quen thuộc</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-brand-cyan flex-shrink-0" />
+                <span>USDC trên Solana Devnet</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-brand-lavender flex-shrink-0" />
+                <span>Trải nghiệm qua Expo</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-brand-cyan flex-shrink-0" />
-              <span>USDC trên Solana Devnet</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Cpu className="w-4 h-4 text-brand-lavender flex-shrink-0" />
-              <span>Trải nghiệm qua Expo</span>
-            </div>
-          </div>
+          </RevealOnScroll>
         </div>
 
         {/* Right Column: Fully Interactive Phone Mockup with 3D Cursor Tracking */}
         <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-          <PhoneTiltWrapper className="w-full max-w-[340px] sm:max-w-[360px] aspect-[9/18]">
-            {/* Phone Frame Container */}
-            <div className="relative w-full h-full rounded-[44px] bg-brand-inkBlack border-4 border-brand-inkBlack p-3 [transform-style:preserve-3d]">
-              {/* Phone Screen with Full User Interaction */}
-              <div className="relative w-full h-full rounded-[36px] overflow-hidden border-2 border-brand-inkBlack bg-brand-warmCream [transform:translateZ(12px)]">
-                <AppMockupScreens activeTab="send" />
-              </div>
+          <RevealOnScroll animation="pop" delay={180}>
+            <PhoneTiltWrapper className="w-full max-w-[340px] sm:max-w-[360px] aspect-[9/18]">
+              {/* Phone Frame Container */}
+              <div className="relative w-full h-full rounded-[44px] bg-brand-inkBlack border-4 border-brand-inkBlack p-3 [transform-style:preserve-3d]">
+                {/* Phone Screen with Full User Interaction */}
+                <div className="relative w-full h-full rounded-[36px] overflow-hidden border-2 border-brand-inkBlack bg-brand-warmCream [transform:translateZ(12px)]">
+                  <AppMockupScreens activeTab="send" />
+                </div>
 
-              {/* Floating Neo-Brutalist Callout Pill (Top Right - 3D Pop Out) */}
-              <div className="absolute -top-4 -right-4 bg-brand-lime text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5 animate-bounce pointer-events-none [transform:translateZ(35px)]">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Solana Devnet</span>
-              </div>
+                {/* Floating Neo-Brutalist Callout Pill (Top Right - 3D Pop Out) */}
+                <div className="absolute -top-4 -right-4 bg-brand-lime text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5 animate-bounce pointer-events-none [transform:translateZ(35px)]">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Solana Devnet</span>
+                </div>
 
-              {/* Floating Neo-Brutalist Interactive Badge (Bottom Left - 3D Pop Out) */}
-              <div className="absolute -bottom-4 -left-4 bg-brand-cyan text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5 pointer-events-none [transform:translateZ(35px)]">
-                <span>Bấm trực tiếp để thử nghiệm</span>
+                {/* Floating Neo-Brutalist Interactive Badge (Bottom Left - 3D Pop Out) */}
+                <div className="absolute -bottom-4 -left-4 bg-brand-cyan text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5 pointer-events-none [transform:translateZ(35px)]">
+                  <span>Bấm trực tiếp để thử nghiệm</span>
+                </div>
               </div>
-            </div>
-          </PhoneTiltWrapper>
+            </PhoneTiltWrapper>
+          </RevealOnScroll>
         </div>
       </div>
     </section>

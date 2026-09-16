@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowDownLeft, ArrowUpRight, History, QrCode, Phone, Wallet, ShieldCheck, Check } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { AppMockupScreens } from '../assets/AppMockupScreens';
+import { RevealOnScroll } from './RevealOnScroll';
 
 export const ExperienceShowcase: React.FC = () => {
   const { t } = useI18n();
@@ -11,59 +12,68 @@ export const ExperienceShowcase: React.FC = () => {
     <section id="experience" className="relative w-full bg-brand-warmCream text-brand-inkBlack py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-lavender border-2 border-brand-inkBlack font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
-            <span>{t.experience.tag}</span>
+        <RevealOnScroll animation="fade-up">
+          <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-lavender border-2 border-brand-inkBlack font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
+              <span>{t.experience.tag}</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-inkBlack tracking-tight mb-5">
+              {t.experience.headline}
+            </h2>
+            <p className="text-base sm:text-lg text-stone-700 font-medium leading-relaxed">
+              {t.experience.subtitle}
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-inkBlack tracking-tight mb-5">
-            {t.experience.headline}
-          </h2>
-          <p className="text-base sm:text-lg text-stone-700 font-medium leading-relaxed">
-            {t.experience.subtitle}
-          </p>
-        </div>
+        </RevealOnScroll>
 
-        {/* 3 Callout Cards */}
+        {/* 3 Callout Cards with Staggered Entrance */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          <div className="bg-white border-3 border-brand-inkBlack rounded-2xl p-6 shadow-brutal card-brutal-interactive">
-            <div className="w-12 h-12 rounded-xl bg-brand-lime border-2 border-brand-inkBlack flex items-center justify-center font-black text-xl mb-4 shadow-brutal-xs">
-              <Wallet className="w-6 h-6 text-brand-inkBlack" />
+          <RevealOnScroll animation="fade-up" delay={0}>
+            <div className="h-full bg-white border-3 border-brand-inkBlack rounded-2xl p-6 shadow-brutal card-brutal-interactive">
+              <div className="w-12 h-12 rounded-xl bg-brand-lime border-2 border-brand-inkBlack flex items-center justify-center font-black text-xl mb-4 shadow-brutal-xs">
+                <Wallet className="w-6 h-6 text-brand-inkBlack" />
+              </div>
+              <h3 className="text-xl font-black text-brand-inkBlack mb-2">
+                {t.callouts.balance}
+              </h3>
+              <p className="text-sm font-medium text-stone-600 leading-relaxed">
+                {t.callouts.balanceDesc}
+              </p>
             </div>
-            <h3 className="text-xl font-black text-brand-inkBlack mb-2">
-              {t.callouts.balance}
-            </h3>
-            <p className="text-sm font-medium text-stone-600 leading-relaxed">
-              {t.callouts.balanceDesc}
-            </p>
-          </div>
+          </RevealOnScroll>
 
-          <div className="bg-white border-3 border-brand-inkBlack rounded-2xl p-6 shadow-brutal card-brutal-interactive">
-            <div className="w-12 h-12 rounded-xl bg-brand-cyan border-2 border-brand-inkBlack flex items-center justify-center font-black text-xl mb-4 shadow-brutal-xs">
-              <Phone className="w-6 h-6 text-brand-inkBlack" />
+          <RevealOnScroll animation="fade-up" delay={120}>
+            <div className="h-full bg-white border-3 border-brand-inkBlack rounded-2xl p-6 shadow-brutal card-brutal-interactive">
+              <div className="w-12 h-12 rounded-xl bg-brand-cyan border-2 border-brand-inkBlack flex items-center justify-center font-black text-xl mb-4 shadow-brutal-xs">
+                <Phone className="w-6 h-6 text-brand-inkBlack" />
+              </div>
+              <h3 className="text-xl font-black text-brand-inkBlack mb-2">
+                {t.callouts.receive}
+              </h3>
+              <p className="text-sm font-medium text-stone-600 leading-relaxed">
+                {t.callouts.receiveDesc}
+              </p>
             </div>
-            <h3 className="text-xl font-black text-brand-inkBlack mb-2">
-              {t.callouts.receive}
-            </h3>
-            <p className="text-sm font-medium text-stone-600 leading-relaxed">
-              {t.callouts.receiveDesc}
-            </p>
-          </div>
+          </RevealOnScroll>
 
-          <div className="bg-white border-3 border-brand-inkBlack rounded-2xl p-6 shadow-brutal card-brutal-interactive">
-            <div className="w-12 h-12 rounded-xl bg-brand-lavender border-2 border-brand-inkBlack flex items-center justify-center font-black text-xl mb-4 shadow-brutal-xs">
-              <ShieldCheck className="w-6 h-6 text-brand-inkBlack" />
+          <RevealOnScroll animation="fade-up" delay={240}>
+            <div className="h-full bg-white border-3 border-brand-inkBlack rounded-2xl p-6 shadow-brutal card-brutal-interactive">
+              <div className="w-12 h-12 rounded-xl bg-brand-lavender border-2 border-brand-inkBlack flex items-center justify-center font-black text-xl mb-4 shadow-brutal-xs">
+                <ShieldCheck className="w-6 h-6 text-brand-inkBlack" />
+              </div>
+              <h3 className="text-xl font-black text-brand-inkBlack mb-2">
+                {t.callouts.transfer}
+              </h3>
+              <p className="text-sm font-medium text-stone-600 leading-relaxed">
+                {t.callouts.transferDesc}
+              </p>
             </div>
-            <h3 className="text-xl font-black text-brand-inkBlack mb-2">
-              {t.callouts.transfer}
-            </h3>
-            <p className="text-sm font-medium text-stone-600 leading-relaxed">
-              {t.callouts.transferDesc}
-            </p>
-          </div>
+          </RevealOnScroll>
         </div>
 
         {/* Interactive Feature Tabs Showcase */}
-        <div className="bg-white border-4 border-brand-inkBlack rounded-3xl p-6 sm:p-10 shadow-brutal-xl">
+        <RevealOnScroll animation="pop" delay={100}>
+          <div className="bg-white border-4 border-brand-inkBlack rounded-3xl p-6 sm:p-10 shadow-brutal-xl">
           {/* Tab Selector Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3 mb-10 pb-6 border-b-2 border-brand-inkBlack">
             <button
@@ -114,7 +124,7 @@ export const ExperienceShowcase: React.FC = () => {
             {/* Left Content */}
             <div className="lg:col-span-7 flex flex-col items-start">
               {activeTab === 'send' && (
-                <div className="animate-fadeIn">
+                <div key="tab-send" className="animate-appearance-smooth">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-lavender/30 border border-brand-inkBlack rounded-lg text-xs font-black uppercase mb-3">
                     Luồng chuyển stablecoin
                   </div>
@@ -150,7 +160,7 @@ export const ExperienceShowcase: React.FC = () => {
               )}
 
               {activeTab === 'receive' && (
-                <div className="animate-fadeIn">
+                <div key="tab-receive" className="animate-appearance-smooth">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-cyan/30 border border-brand-inkBlack rounded-lg text-xs font-black uppercase mb-3">
                     Luồng nhận stablecoin
                   </div>
@@ -171,7 +181,7 @@ export const ExperienceShowcase: React.FC = () => {
               )}
 
               {activeTab === 'track' && (
-                <div className="animate-fadeIn">
+                <div key="tab-track" className="animate-appearance-smooth">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-lime/30 border border-brand-inkBlack rounded-lg text-xs font-black uppercase mb-3">
                     Quản lý số dư & Lịch sử
                   </div>
@@ -215,7 +225,8 @@ export const ExperienceShowcase: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </RevealOnScroll>
+    </div>
+  </section>
   );
 };

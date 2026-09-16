@@ -1,6 +1,7 @@
 import React from 'react';
 import { Info, HelpCircle, CheckCircle } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
+import { RevealOnScroll } from './RevealOnScroll';
 
 export const StablecoinExplainer: React.FC = () => {
   const { t } = useI18n();
@@ -8,7 +9,8 @@ export const StablecoinExplainer: React.FC = () => {
   return (
     <section className="w-full bg-brand-warmCream text-brand-inkBlack py-12 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack">
       <div className="max-w-5xl mx-auto">
-        <div className="bg-white border-4 border-brand-inkBlack rounded-3xl p-6 sm:p-8 shadow-brutal-lg relative overflow-hidden">
+        <RevealOnScroll animation="pop">
+          <div className="bg-white border-4 border-brand-inkBlack rounded-3xl p-6 sm:p-8 shadow-brutal-lg relative overflow-hidden">
           {/* Top accent badge */}
           <div className="flex items-center justify-between mb-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-paleYellow border-2 border-brand-inkBlack rounded-xl text-xs font-black uppercase shadow-brutal-xs">
@@ -41,7 +43,8 @@ export const StablecoinExplainer: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </RevealOnScroll>
+    </div>
+  </section>
   );
 };

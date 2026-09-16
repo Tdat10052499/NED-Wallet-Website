@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Copy, Check, ExternalLink, Sparkles, AlertCircle } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { siteConfig } from '../config/siteConfig';
+import { RevealOnScroll } from './RevealOnScroll';
 
 export const DemoGuide: React.FC = () => {
   const { t, lang } = useI18n();
@@ -46,22 +47,25 @@ export const DemoGuide: React.FC = () => {
     <section id="demo" className="scroll-mt-16 relative w-full bg-brand-warmCream text-brand-inkBlack py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-cyan border-2 border-brand-inkBlack font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>{t.demoGuide.networkBadge}</span>
+        <RevealOnScroll animation="fade-up">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-cyan border-2 border-brand-inkBlack font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{t.demoGuide.networkBadge}</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-inkBlack tracking-tight mb-5">
+              {t.demoGuide.headline}
+            </h2>
+            <p className="text-base sm:text-lg text-stone-700 font-medium leading-relaxed">
+              {t.demoGuide.subtitle}
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-inkBlack tracking-tight mb-5">
-            {t.demoGuide.headline}
-          </h2>
-          <p className="text-base sm:text-lg text-stone-700 font-medium leading-relaxed">
-            {t.demoGuide.subtitle}
-          </p>
-        </div>
+        </RevealOnScroll>
 
         {/* Main Interactive Contact & Onboarding Card */}
-        <div className="bg-white border-4 border-brand-inkBlack rounded-3xl p-6 sm:p-10 shadow-brutal-xl mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <RevealOnScroll animation="pop" delay={120}>
+          <div className="bg-white border-4 border-brand-inkBlack rounded-3xl p-6 sm:p-10 shadow-brutal-xl mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left: Step Guidance */}
             <div className="lg:col-span-7 flex flex-col gap-4">
               <h3 className="text-xl font-black text-brand-inkBlack mb-1">
@@ -161,7 +165,8 @@ export const DemoGuide: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </RevealOnScroll>
+    </div>
+  </section>
   );
 };
