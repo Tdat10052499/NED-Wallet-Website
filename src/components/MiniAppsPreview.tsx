@@ -1,5 +1,5 @@
 import React from 'react';
-import { Blocks, Layers, Sparkles, ArrowRight, Construction } from 'lucide-react';
+import { Blocks, ArrowRight, Sparkles, Layers } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { RevealOnScroll } from './RevealOnScroll';
 
@@ -16,49 +16,50 @@ export const MiniAppsPreview: React.FC<MiniAppsPreviewProps> = ({ onNavigate }) 
   };
 
   return (
-    <section className="relative w-full bg-brand-deepPurple text-brand-offWhite py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack">
+    <section
+      id="mini-apps"
+      className="scroll-mt-20 relative w-full bg-brand-deepPurple text-brand-offWhite py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack select-none"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <RevealOnScroll animation="fade-up">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-darkSurface border-2 border-brand-lavender text-brand-lavender font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
-              <Construction className="w-3.5 h-3.5 text-brand-lime" />
-              <span>{t.miniApps.status}</span>
+              <span className="w-2 h-2 rounded-full bg-brand-lime animate-pulse" />
+              <span>{t.miniApps.statusBadge}</span>
             </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-offWhite tracking-tight mb-5">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-offWhite tracking-tight mb-4">
               {t.miniApps.headline}
             </h2>
-
             <p className="text-base sm:text-lg text-stone-300 font-medium leading-relaxed">
               {t.miniApps.description}
             </p>
           </div>
         </RevealOnScroll>
 
-        {/* 3 Geometric Extensible Architecture Modules */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-14">
+        {/* Modular Extensible Architecture Visual Diagram */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {/* Module 1 */}
           <RevealOnScroll animation="fade-up" delay={0} className="h-full">
             <div className="h-full bg-brand-darkSurface border-3 border-brand-inkBlack rounded-3xl p-7 flex flex-col justify-between shadow-brutal card-brutal-interactive">
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-brand-lavender text-brand-inkBlack flex items-center justify-center font-black mb-6 border-2 border-brand-inkBlack shadow-brutal-xs">
+                <div className="w-12 h-12 rounded-2xl bg-brand-lavender text-brand-inkBlack flex items-center justify-center font-black mb-5 border-2 border-brand-inkBlack shadow-brutal-xs">
                   <Blocks className="w-6 h-6" />
                 </div>
                 <div className="text-[10px] font-black uppercase tracking-wider text-brand-lavender mb-2">
-                  Kiến trúc module 01
+                  Định hướng tích hợp 01
                 </div>
-                <h3 className="text-xl font-black text-brand-offWhite mb-3">
-                  {t.miniApps.card1Title}
+                <h3 className="text-xl font-black text-brand-offWhite mb-2">
+                  {t.miniApps.module1}
                 </h3>
                 <p className="text-sm font-medium text-stone-300 leading-relaxed">
-                  {t.miniApps.card1Desc}
+                  Thiết kế module cho phép mở các dịch vụ tiện ích số trực tiếp từ danh mục bên trong ví.
                 </p>
               </div>
 
-              <div className="mt-8 pt-4 border-t border-brand-lavender/20 flex items-center gap-2 text-xs font-bold text-stone-400">
+              <div className="mt-6 pt-4 border-t border-brand-lavender/20 flex items-center gap-2 text-xs font-bold text-stone-400">
                 <span className="w-2 h-2 rounded-full bg-brand-lime" />
-                <span>Định hướng tích hợp</span>
+                <span>Không cần rời giao diện ví</span>
               </div>
             </div>
           </RevealOnScroll>
@@ -67,23 +68,23 @@ export const MiniAppsPreview: React.FC<MiniAppsPreviewProps> = ({ onNavigate }) 
           <RevealOnScroll animation="fade-up" delay={140} className="h-full">
             <div className="h-full bg-brand-darkSurface border-3 border-brand-inkBlack rounded-3xl p-7 flex flex-col justify-between shadow-brutal card-brutal-interactive">
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-brand-lime text-brand-inkBlack flex items-center justify-center font-black mb-6 border-2 border-brand-inkBlack shadow-brutal-xs">
+                <div className="w-12 h-12 rounded-2xl bg-brand-lime text-brand-inkBlack flex items-center justify-center font-black mb-5 border-2 border-brand-inkBlack shadow-brutal-xs">
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <div className="text-[10px] font-black uppercase tracking-wider text-brand-lime mb-2">
-                  Kiến trúc module 02
+                  Định hướng tích hợp 02
                 </div>
-                <h3 className="text-xl font-black text-brand-offWhite mb-3">
-                  {t.miniApps.card2Title}
+                <h3 className="text-xl font-black text-brand-offWhite mb-2">
+                  {t.miniApps.module2}
                 </h3>
                 <p className="text-sm font-medium text-stone-300 leading-relaxed">
-                  {t.miniApps.card2Desc}
+                  Không gian cho các ứng dụng tương tác cộng đồng và minigame gắn với định danh người dùng.
                 </p>
               </div>
 
-              <div className="mt-8 pt-4 border-t border-brand-lime/20 flex items-center gap-2 text-xs font-bold text-stone-400">
+              <div className="mt-6 pt-4 border-t border-brand-lime/20 flex items-center gap-2 text-xs font-bold text-stone-400">
                 <span className="w-2 h-2 rounded-full bg-brand-cyan" />
-                <span>Định hướng tích hợp</span>
+                <span>Trải nghiệm mượt mà</span>
               </div>
             </div>
           </RevealOnScroll>
@@ -92,43 +93,47 @@ export const MiniAppsPreview: React.FC<MiniAppsPreviewProps> = ({ onNavigate }) 
           <RevealOnScroll animation="fade-up" delay={280} className="h-full">
             <div className="h-full bg-brand-darkSurface border-3 border-brand-inkBlack rounded-3xl p-7 flex flex-col justify-between shadow-brutal card-brutal-interactive">
               <div>
-                <div className="w-12 h-12 rounded-2xl bg-brand-cyan text-brand-inkBlack flex items-center justify-center font-black mb-6 border-2 border-brand-inkBlack shadow-brutal-xs">
+                <div className="w-12 h-12 rounded-2xl bg-brand-cyan text-brand-inkBlack flex items-center justify-center font-black mb-5 border-2 border-brand-inkBlack shadow-brutal-xs">
                   <Layers className="w-6 h-6" />
                 </div>
                 <div className="text-[10px] font-black uppercase tracking-wider text-brand-cyan mb-2">
-                  Kiến trúc module 03
+                  Định hướng tích hợp 03
                 </div>
-                <h3 className="text-xl font-black text-brand-offWhite mb-3">
-                  {t.miniApps.card3Title}
+                <h3 className="text-xl font-black text-brand-offWhite mb-2">
+                  {t.miniApps.module3}
                 </h3>
                 <p className="text-sm font-medium text-stone-300 leading-relaxed">
-                  {t.miniApps.card3Desc}
+                  Cơ chế thanh toán vi mô và tương tác token Devnet dễ dàng thông qua các API nội bộ dự kiến.
                 </p>
               </div>
 
-              <div className="mt-8 pt-4 border-t border-brand-cyan/20 flex items-center gap-2 text-xs font-bold text-stone-400">
+              <div className="mt-6 pt-4 border-t border-brand-cyan/20 flex items-center gap-2 text-xs font-bold text-stone-400">
                 <span className="w-2 h-2 rounded-full bg-brand-lavender" />
-                <span>Định hướng tích hợp</span>
+                <span>Tiếp cận người dùng sớm</span>
               </div>
             </div>
           </RevealOnScroll>
         </div>
 
-        {/* Builder Invitation Callout */}
-        <RevealOnScroll animation="pop" delay={100}>
-          <div className="bg-brand-lavender text-brand-inkBlack border-4 border-brand-inkBlack rounded-3xl p-8 sm:p-10 shadow-brutal-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="max-w-2xl">
-              <h3 className="text-2xl sm:text-3xl font-black mb-2">
-                Bạn là nhà phát triển muốn thử nghiệm mini-app?
+        {/* Builder CTA Callout Box */}
+        <RevealOnScroll animation="pop" delay={120}>
+          <div className="bg-brand-lavender text-brand-inkBlack border-4 border-brand-inkBlack rounded-3xl p-6 sm:p-8 shadow-brutal-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+              <div className="text-xs font-black uppercase tracking-wider text-stone-700 mb-1">
+                Dành cho đối tác & nhà phát triển
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-brand-inkBlack">
+                Khám phá cổng hợp tác dành cho builder
               </h3>
-              <p className="text-base font-bold text-stone-800 leading-relaxed">
-                Chúng tôi đang trong giai đoạn tiếp nhận ý tưởng và phối hợp thử nghiệm trực tiếp cùng các builder quan tâm.
+              <p className="text-sm sm:text-base font-bold text-stone-800 mt-1">
+                Xem lộ trình trao đổi ý tưởng và phối hợp thử nghiệm tích hợp cùng đội ngũ N.E.D.
               </p>
             </div>
 
             <button
+              type="button"
               onClick={handleExploreBuilders}
-              className="btn-brutal-primary bg-brand-deepPurple text-brand-offWhite border-3 border-brand-inkBlack px-6 py-3.5 rounded-2xl font-black text-sm flex items-center gap-2 shadow-brutal flex-shrink-0"
+              className="btn-brutal-dark px-6 py-3.5 rounded-2xl font-black text-sm flex items-center gap-2 flex-shrink-0 cursor-pointer"
             >
               <span>{t.miniApps.cta}</span>
               <ArrowRight className="w-4 h-4 text-brand-lime" />

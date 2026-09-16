@@ -72,10 +72,10 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
             {t.nav.experience}
           </button>
           <button
-            onClick={() => handleNavClick('#how-it-works')}
+            onClick={() => handleNavClick('#demo')}
             className="px-3 py-1.5 text-sm font-bold text-brand-offWhite hover:text-brand-lavender rounded-lg transition-colors"
           >
-            {t.nav.howItWorks}
+            {t.nav.getStarted}
           </button>
           <button
             onClick={() => handleNavClick('/builders')}
@@ -195,10 +195,10 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                   {t.nav.experience}
                 </button>
                 <button
-                  onClick={() => handleNavClick('#how-it-works')}
+                  onClick={() => handleNavClick('#demo')}
                   className="w-full text-left py-3 px-4 bg-white border-2 border-brand-inkBlack rounded-xl font-black text-brand-inkBlack shadow-brutal-xs hover:bg-brand-lavender/30"
                 >
-                  {t.nav.howItWorks}
+                  {t.nav.getStarted}
                 </button>
                 <button
                   onClick={() => handleNavClick('/builders')}

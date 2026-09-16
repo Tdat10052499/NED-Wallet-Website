@@ -7,7 +7,7 @@ import { PhoneTiltWrapper } from './PhoneTiltWrapper';
 import { RevealOnScroll } from './RevealOnScroll';
 
 interface HeroSceneProps {
-  onNavigate: (path: string) => void;
+  onNavigate?: (path: string) => void;
 }
 
 interface FloatingCubeData {
@@ -20,7 +20,7 @@ interface FloatingCubeData {
   initialY: number;
 }
 
-export const HeroScene: React.FC<HeroSceneProps> = ({ onNavigate }) => {
+export const HeroScene: React.FC<HeroSceneProps> = () => {
   const { t } = useI18n();
   const sectionRef = useRef<HTMLElement>(null);
   const canvasContainerRef = useRef<HTMLDivElement>(null);
@@ -223,10 +223,12 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ onNavigate }) => {
     }
   };
 
-  const handleHeroBuilderClick = (e: React.MouseEvent) => {
+  const handleHeroSecondaryClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    onNavigate('/builders');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const el = document.querySelector('#experience');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
@@ -295,7 +297,7 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ onNavigate }) => {
 
               <button
                 type="button"
-                onClick={handleHeroBuilderClick}
+                onClick={handleHeroSecondaryClick}
                 className="btn-brutal-secondary px-6 py-3.5 rounded-2xl text-base font-black flex items-center justify-center gap-2 shadow-brutal cursor-pointer"
               >
                 <span>{t.hero.ctaSecondary}</span>
@@ -309,15 +311,15 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ onNavigate }) => {
             <div className="mt-10 pt-6 border-t-2 border-brand-lavender/20 grid grid-cols-2 sm:grid-cols-3 gap-4 w-full text-xs font-bold text-stone-300">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-brand-lime flex-shrink-0" />
-                <span>Thao tác quen thuộc</span>
+                <span>{t.hero.trustPill1}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Shield className="w-4 h-4 text-brand-cyan flex-shrink-0" />
-                <span>USDC trên Solana Devnet</span>
+                <span>{t.hero.trustPill2}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Cpu className="w-4 h-4 text-brand-lavender flex-shrink-0" />
-                <span>Trải nghiệm qua Expo</span>
+                <span>{t.hero.trustPill3}</span>
               </div>
             </div>
           </RevealOnScroll>
