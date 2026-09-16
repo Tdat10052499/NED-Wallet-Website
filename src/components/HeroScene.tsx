@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { ArrowRight, Sparkles, Shield, Cpu, ChevronRight } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { AppMockupScreens } from '../assets/AppMockupScreens';
+import { PhoneTiltWrapper } from './PhoneTiltWrapper';
 
 interface HeroSceneProps {
   onNavigate: (path: string) => void;
@@ -311,26 +312,28 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Right Column: Fully Interactive Phone Mockup */}
+        {/* Right Column: Fully Interactive Phone Mockup with 3D Cursor Tracking */}
         <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-          {/* Phone Frame Container */}
-          <div className="relative w-full max-w-[340px] sm:max-w-[360px] aspect-[9/18] rounded-[44px] bg-brand-inkBlack border-4 border-brand-inkBlack p-3 shadow-brutal-xl">
-            {/* Phone Screen with Full User Interaction */}
-            <div className="relative w-full h-full rounded-[36px] overflow-hidden border-2 border-brand-inkBlack bg-brand-warmCream">
-              <AppMockupScreens activeTab="send" />
-            </div>
+          <PhoneTiltWrapper className="w-full max-w-[340px] sm:max-w-[360px] aspect-[9/18]">
+            {/* Phone Frame Container */}
+            <div className="relative w-full h-full rounded-[44px] bg-brand-inkBlack border-4 border-brand-inkBlack p-3 [transform-style:preserve-3d]">
+              {/* Phone Screen with Full User Interaction */}
+              <div className="relative w-full h-full rounded-[36px] overflow-hidden border-2 border-brand-inkBlack bg-brand-warmCream [transform:translateZ(12px)]">
+                <AppMockupScreens activeTab="send" />
+              </div>
 
-            {/* Floating Neo-Brutalist Callout Pill (Top Right) */}
-            <div className="absolute -top-4 -right-4 bg-brand-lime text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5 animate-bounce pointer-events-none">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Solana Devnet</span>
-            </div>
+              {/* Floating Neo-Brutalist Callout Pill (Top Right - 3D Pop Out) */}
+              <div className="absolute -top-4 -right-4 bg-brand-lime text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5 animate-bounce pointer-events-none [transform:translateZ(35px)]">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Solana Devnet</span>
+              </div>
 
-            {/* Floating Neo-Brutalist Interactive Badge (Bottom Left) */}
-            <div className="absolute -bottom-4 -left-4 bg-brand-cyan text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5 pointer-events-none">
-              <span>Bấm trực tiếp để thử nghiệm</span>
+              {/* Floating Neo-Brutalist Interactive Badge (Bottom Left - 3D Pop Out) */}
+              <div className="absolute -bottom-4 -left-4 bg-brand-cyan text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5 pointer-events-none [transform:translateZ(35px)]">
+                <span>Bấm trực tiếp để thử nghiệm</span>
+              </div>
             </div>
-          </div>
+          </PhoneTiltWrapper>
         </div>
       </div>
     </section>
