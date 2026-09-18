@@ -51,6 +51,16 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
     }
   };
 
+  const handleDemoOpen = () => {
+    setMobileMenuOpen(false);
+    if (currentPath !== '/') {
+      onNavigate('/');
+      window.setTimeout(() => window.dispatchEvent(new CustomEvent('open-demo-guide')), 150);
+      return;
+    }
+    window.dispatchEvent(new CustomEvent('open-demo-guide'));
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full bg-brand-deepPurple/95 border-b-3 border-brand-inkBlack backdrop-blur-none px-4 sm:px-6 lg:px-8 py-3 transition-colors">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
@@ -72,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
             {t.nav.experience}
           </button>
           <button
-            onClick={() => handleNavClick('#demo')}
+            onClick={handleDemoOpen}
             className="px-3 py-1.5 text-sm font-bold text-brand-offWhite hover:text-brand-lavender rounded-lg transition-colors"
           >
             {t.nav.getStarted}
@@ -127,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
 
           {/* Primary Demo CTA Button */}
           <button
-            onClick={() => handleNavClick('#demo')}
+            onClick={handleDemoOpen}
             className="btn-brutal-primary px-4 py-2 rounded-xl text-sm font-black flex items-center gap-1.5"
           >
             <span>{t.nav.tryDemo}</span>
@@ -195,7 +205,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                   {t.nav.experience}
                 </button>
                 <button
-                  onClick={() => handleNavClick('#demo')}
+                  onClick={handleDemoOpen}
                   className="w-full text-left py-3 px-4 bg-white border-2 border-brand-inkBlack rounded-xl font-black text-brand-inkBlack shadow-brutal-xs hover:bg-brand-lavender/30"
                 >
                   {t.nav.getStarted}
@@ -242,7 +252,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
               </div>
 
               <button
-                onClick={() => handleNavClick('#demo')}
+                onClick={handleDemoOpen}
                 className="w-full py-3 bg-brand-lavender text-brand-inkBlack border-3 border-brand-inkBlack rounded-xl font-black text-sm shadow-brutal flex items-center justify-center gap-2"
               >
                 <span>{t.nav.tryDemo}</span>

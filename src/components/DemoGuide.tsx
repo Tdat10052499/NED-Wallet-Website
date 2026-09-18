@@ -3,7 +3,6 @@ import {
   Mail,
   Copy,
   Check,
-  ExternalLink,
   Sparkles,
   AlertTriangle,
   Play,
@@ -16,10 +15,12 @@ import {
 import { useI18n } from '../i18n/I18nContext';
 import { siteConfig } from '../config/siteConfig';
 import { RevealOnScroll } from './RevealOnScroll';
+import { DemoExpoModal } from './DemoExpoModal';
 
 export const DemoGuide: React.FC = () => {
   const { t, lang } = useI18n();
   const [copied, setCopied] = useState(false);
+  const [isExpoModalOpen, setIsExpoModalOpen] = useState(false);
 
   // Local Video Element Ref & Playback State
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -64,6 +65,12 @@ export const DemoGuide: React.FC = () => {
     return () => {
       observer.disconnect();
     };
+  }, []);
+
+  useEffect(() => {
+    const openModal = () => setIsExpoModalOpen(true);
+    window.addEventListener('open-demo-guide', openModal);
+    return () => window.removeEventListener('open-demo-guide', openModal);
   }, []);
 
   // Click on video opens the YouTube link in a new tab
@@ -375,6 +382,13 @@ export const DemoGuide: React.FC = () => {
 
                 {/* Actions */}
                 <div className="flex flex-col gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setIsExpoModalOpen(true)}
+                    className="btn-brutal-lime w-full py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-brutal-xs cursor-pointer"
+                  >
+                    <span>Trải nghiệm demo qua Expo Go</span>
+                  </button>
                   <a
                     href={mailtoLink}
                     className="btn-brutal-primary w-full py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-brutal-xs cursor-pointer"
@@ -410,6 +424,8 @@ export const DemoGuide: React.FC = () => {
             </div>
           </div>
         </RevealOnScroll>
+
+        <DemoExpoModal isOpen={isExpoModalOpen} onClose={() => setIsExpoModalOpen(false)} />
 
         {/* Test Environment Warning Callout */}
         <RevealOnScroll animation="fade-up" delay={160}>

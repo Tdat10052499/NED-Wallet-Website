@@ -235,10 +235,7 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
 
   const handleHeroDemoClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    const el = document.querySelector('#demo');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    window.dispatchEvent(new CustomEvent('open-demo-guide'));
   };
 
   const handleHeroSecondaryClick = (e: React.MouseEvent) => {
