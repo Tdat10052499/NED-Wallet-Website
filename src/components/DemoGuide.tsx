@@ -26,83 +26,44 @@ export const DemoGuide: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
-  // Scroll Progress (0 = 75% scale, blur 12px; 1 = 100% scale, crystal clear)
+  // Viewport Intersection State for Pure 60/120 FPS CSS Zoom & Blur
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isInView, setIsInView] = useState(false);
 
-  // Smooth Cursor Follower: direct DOM ref for 120 FPS zero-rerender performance
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const [isHovering, setIsHovering] = useState(false);
 
-  // Scroll Progress Calculation with Auto-Play (at 100%) and Auto-Pause (at <= 85%)
+  // IntersectionObserver: Plays & zooms to 100% when in view, pauses & shrinks to 75% when scrolled away
   useEffect(() => {
-    let ticking = false;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-
-            const containerCenter = rect.top + rect.height / 2;
-            const viewportCenter = windowHeight / 2;
-            const distFromCenter = Math.abs(containerCenter - viewportCenter);
-
-            // Plateau zone where video remains comfortably at 100% scale
-            const plateau = Math.max(60, windowHeight * 0.12);
-            // Distance over which it shrinks from 100% down to 75%
-            const fadeSpan = Math.max(260, rect.height * 0.45 + windowHeight * 0.28);
-
-            let rawProgress = 1;
-            if (distFromCenter > plateau) {
-              rawProgress = 1 - (distFromCenter - plateau) / fadeSpan;
-            }
-            const clamped = Math.max(0, Math.min(1, rawProgress));
-            setScrollProgress(clamped);
-
-            // Scale value: 0.75 (75%) -> 1.00 (100%)
-            const currentScale = 0.75 + 0.25 * clamped;
-
-            // 1. Tự động phát khi kích thước đạt 100% (>= 0.99)
-            if (currentScale >= 0.99) {
-              if (videoRef.current && videoRef.current.paused) {
-                videoRef.current.play().catch(() => {});
-                setIsPlaying(true);
-              }
-            }
-            // 2. Tự động dừng lại khi kích thước giảm xuống tới mức 85% (<= 0.85)
-            else if (currentScale <= 0.85) {
-              if (videoRef.current && !videoRef.current.paused) {
-                videoRef.current.pause();
-                setIsPlaying(false);
-              }
-            }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          setIsPlaying(true);
+          if (videoRef.current && videoRef.current.paused) {
+            videoRef.current.play().catch(() => {});
           }
-          ticking = false;
-        });
-        ticking = true;
+        } else {
+          setIsInView(false);
+          setIsPlaying(false);
+          if (videoRef.current && !videoRef.current.paused) {
+            videoRef.current.pause();
+          }
+        }
+      },
+      {
+        // Triggers smoothly when ~30% of the video container is visible in viewport
+        threshold: 0.3,
+        rootMargin: '0px 0px -5% 0px',
       }
-    };
+    );
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-    handleScroll(); // Initial evaluation
+    observer.observe(container);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      observer.disconnect();
     };
-  }, []);
-
-  // Buttery-Smooth 120 FPS Cursor Movement (direct GPU translate3d, no React re-render)
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    if (cursorRef.current) {
-      cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-    }
   }, []);
 
   // Click on video opens the YouTube link in a new tab
@@ -167,13 +128,6 @@ export const DemoGuide: React.FC = () => {
     siteConfig.demoMailSubject
   )}&body=${encodeURIComponent(mailBody)}`;
 
-  // Dynamic values calculated from scroll:
-  // Initial: scale 0.75, blur 12px, opacity 0.6
-  // Scrolled in: scale 1.00, blur 0px, opacity 1.0
-  const currentScale = 0.75 + 0.25 * scrollProgress;
-  const currentBlur = (1 - scrollProgress) * 12;
-  const currentOpacity = 0.6 + 0.4 * scrollProgress;
-
   const quickTakeaways = [
     {
       num: '01',
@@ -232,25 +186,22 @@ export const DemoGuide: React.FC = () => {
           </div>
         </RevealOnScroll>
 
-        {/* Scroll-Driven Zoom & Clear Video Showcase Container */}
+        {/* Video Showcase Container with Pure GPU Hardware Zoom & Blur Transition */}
         <div ref={containerRef} className="relative w-full mb-14">
           <div
-            className="w-full will-change-transform transition-all duration-150 ease-out origin-center"
+            className="w-full will-change-transform origin-center"
             style={{
-              transform: `scale(${currentScale})`,
-              filter: `blur(${currentBlur}px)`,
-              opacity: currentOpacity,
+              transform: isInView ? 'scale(1)' : 'scale(0.75)',
+              filter: isInView ? 'blur(0px)' : 'blur(12px)',
+              opacity: isInView ? 1 : 0.6,
+              transition:
+                'transform 700ms cubic-bezier(0.16, 1, 0.3, 1), filter 700ms ease-out, opacity 700ms ease-out',
             }}
           >
             {/* Neo-Brutalist Video Chassis */}
             <div
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-              onMouseMove={handleMouseMove}
               onClick={handleVideoClick}
-              className={`relative w-full bg-brand-darkSurface border-4 border-brand-inkBlack rounded-3xl sm:rounded-[36px] overflow-hidden shadow-brutal-xl transition-all cursor-pointer ${
-                isHovering ? 'cursor-none' : ''
-              }`}
+              className="relative w-full bg-brand-darkSurface border-4 border-brand-inkBlack rounded-3xl sm:rounded-[36px] overflow-hidden shadow-brutal-xl transition-all cursor-pointer"
             >
               {/* Window Titlebar (Clean Neo-Brutalist Hardware Controls without percentage) */}
               <div className="bg-brand-inkBlack px-4 sm:px-6 py-3 border-b-3 border-brand-inkBlack flex items-center justify-between gap-2">
@@ -339,20 +290,6 @@ export const DemoGuide: React.FC = () => {
                 {/* Subtle Neo-Brutalist Dark Backdrop Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
-                {/* Buttery-Smooth Follower Cursor Button [Mở video →] */}
-                <div
-                  ref={cursorRef}
-                  className={`pointer-events-none absolute left-0 top-0 z-40 will-change-transform transition-opacity duration-150 ${
-                    isHovering ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  style={{ transform: 'translate3d(-200px, -200px, 0) translate(-50%, -50%)' }}
-                >
-                  <div className="flex items-center gap-2 bg-brand-lime text-brand-inkBlack border-3 border-brand-inkBlack px-4 py-2.5 rounded-full font-black text-xs sm:text-sm shadow-brutal whitespace-nowrap select-none">
-                    <Play className="w-3.5 h-3.5 fill-current text-brand-inkBlack" />
-                    <span>{t.demoGuide.openVideo}</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-brand-inkBlack stroke-[2.5]" />
-                  </div>
-                </div>
               </div>
 
               {/* Bottom Frame Status Bar (No external YouTube link, pure status) */}
