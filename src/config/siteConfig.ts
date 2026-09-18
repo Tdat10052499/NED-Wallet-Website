@@ -3,6 +3,8 @@
  * All product boundaries, contact emails, asset paths, and links are configured here.
  */
 
+const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 export const siteConfig = {
   productName: 'N.E.D Wallet',
   contactEmail: 'tdat.100524@gmail.com',
@@ -10,55 +12,55 @@ export const siteConfig = {
   platform: 'Expo (iOS & Android)',
 
   // Asset paths
-  logoAsset: '/assets/ned-logo.jpg',
-  appLogoAsset: '/assets/brand/logo_app.jpg',
-  brandNedLogo: '/assets/brand/logo_ned_wallet.jpg',
-  brandColors: '/assets/brand/brand_colors.jpg',
+  logoAsset: assetPath('assets/ned-logo.jpg'),
+  appLogoAsset: assetPath('assets/brand/logo_app.jpg'),
+  brandNedLogo: assetPath('assets/brand/logo_ned_wallet.jpg'),
+  brandColors: assetPath('assets/brand/brand_colors.jpg'),
 
   // Mascot Assets (16 biểu cảm của chú gấu N.E.D Teddy)
   mascots: {
-    waving: '/assets/brand/mascot/waving.png',
-    happy: '/assets/brand/mascot/happy.png',
-    proud: '/assets/brand/mascot/proud.png',
-    exciting: '/assets/brand/mascot/exciting.png',
-    curious: '/assets/brand/mascot/curious.png',
-    thinking: '/assets/brand/mascot/thinking.png',
-    laughing: '/assets/brand/mascot/laughing.png',
-    surprised: '/assets/brand/mascot/surprised.png',
-    sleepy: '/assets/brand/mascot/sleepy.png',
-    scared: '/assets/brand/mascot/scared.png',
-    sad: '/assets/brand/mascot/sad.png',
-    angry: '/assets/brand/mascot/angry.png',
-    confused: '/assets/brand/mascot/confused.png',
-    crying: '/assets/brand/mascot/crying.png',
-    embarrassed: '/assets/brand/mascot/embarrassed.png',
-    frustrated: '/assets/brand/mascot/frustrated.png',
+    waving: assetPath('assets/brand/mascot/waving.png'),
+    happy: assetPath('assets/brand/mascot/happy.png'),
+    proud: assetPath('assets/brand/mascot/proud.png'),
+    exciting: assetPath('assets/brand/mascot/exciting.png'),
+    curious: assetPath('assets/brand/mascot/curious.png'),
+    thinking: assetPath('assets/brand/mascot/thinking.png'),
+    laughing: assetPath('assets/brand/mascot/laughing.png'),
+    surprised: assetPath('assets/brand/mascot/surprised.png'),
+    sleepy: assetPath('assets/brand/mascot/sleepy.png'),
+    scared: assetPath('assets/brand/mascot/scared.png'),
+    sad: assetPath('assets/brand/mascot/sad.png'),
+    angry: assetPath('assets/brand/mascot/angry.png'),
+    confused: assetPath('assets/brand/mascot/confused.png'),
+    crying: assetPath('assets/brand/mascot/crying.png'),
+    embarrassed: assetPath('assets/brand/mascot/embarrassed.png'),
+    frustrated: assetPath('assets/brand/mascot/frustrated.png'),
   },
 
   // App Screenshots (14 màn hình ứng dụng thực tế trên Solana Devnet)
   screenshots: {
     // Main Hubs & Features
-    dashboardHome: '/assets/screenshots/app_dashboard_home.png',
-    analyticsCashflow: '/assets/screenshots/app_analytics_cashflow.png',
-    transferCenter: '/assets/screenshots/app_transfer_center.png',
-    transferPhone: '/assets/screenshots/app_transfer_phone.png',
-    shakeSplit: '/assets/screenshots/app_shake_split.png',
-    luckyCoin: '/assets/screenshots/app_lucky_coin.png',
-    miniappsHub: '/assets/screenshots/app_miniapps_hub.png',
+    dashboardHome: assetPath('assets/screenshots/app_dashboard_home.png'),
+    analyticsCashflow: assetPath('assets/screenshots/app_analytics_cashflow.png'),
+    transferCenter: assetPath('assets/screenshots/app_transfer_center.png'),
+    transferPhone: assetPath('assets/screenshots/app_transfer_phone.png'),
+    shakeSplit: assetPath('assets/screenshots/app_shake_split.png'),
+    luckyCoin: assetPath('assets/screenshots/app_lucky_coin.png'),
+    miniappsHub: assetPath('assets/screenshots/app_miniapps_hub.png'),
 
     // Onboarding Flow
-    login: '/assets/screenshots/app_login.png',
-    register: '/assets/screenshots/app_register.png',
-    emailOtp: '/assets/screenshots/app_email_otp.png',
-    phoneSecurity: '/assets/screenshots/app_phone_security.png',
-    phoneOtp: '/assets/screenshots/app_phone_otp.png',
-    handleClaim: '/assets/screenshots/app_handle_claim.png',
-    welcomeSuccess: '/assets/screenshots/app_welcome_success.png',
+    login: assetPath('assets/screenshots/app_login.png'),
+    register: assetPath('assets/screenshots/app_register.png'),
+    emailOtp: assetPath('assets/screenshots/app_email_otp.png'),
+    phoneSecurity: assetPath('assets/screenshots/app_phone_security.png'),
+    phoneOtp: assetPath('assets/screenshots/app_phone_otp.png'),
+    handleClaim: assetPath('assets/screenshots/app_handle_claim.png'),
+    welcomeSuccess: assetPath('assets/screenshots/app_welcome_success.png'),
   },
 
   // Backward-compatible aliases
-  homeScreenshotAsset: '/assets/screenshots/app_dashboard_home.png',
-  sendScreenshotAsset: '/assets/screenshots/app_transfer_phone.png',
+  homeScreenshotAsset: assetPath('assets/screenshots/app_dashboard_home.png'),
+  sendScreenshotAsset: assetPath('assets/screenshots/app_transfer_phone.png'),
 
   // Demo request mailto
   demoMailSubject: 'N.E.D Wallet — Demo request',
@@ -81,8 +83,8 @@ export const siteConfig = {
     id: '6t4StC59mrQ',
     url: 'https://youtu.be/6t4StC59mrQ?si=pssML1KZW4lWzu_D',
     embedUrl: 'https://www.youtube.com/embed/6t4StC59mrQ?enablejsapi=1&rel=0&modestbranding=1&playsinline=1&mute=1',
-    localVideoAsset: '/assets/ned_wallet_demo.mp4',
-    rawLocalVideoAsset: '/assets/N.E.D%20Wallet%20m%E1%BB%9Bi.mp4',
+    localVideoAsset: assetPath('assets/ned_wallet_demo.mp4'),
+    rawLocalVideoAsset: assetPath('assets/N.E.D%20Wallet%20m%E1%BB%9Bi.mp4'),
     thumbnail: 'https://img.youtube.com/vi/6t4StC59mrQ/maxresdefault.jpg',
   },
 

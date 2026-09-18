@@ -7,16 +7,23 @@ import { BuildersPage } from './pages/BuildersPage';
 import { DeveloperDashboardPage } from './pages/DeveloperDashboardPage';
 
 export const App: React.FC = () => {
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+  const appPath = window.location.pathname.startsWith(basePath)
+    ? window.location.pathname.slice(basePath.length) || '/'
+    : window.location.pathname;
   const [currentPath, setCurrentPath] = useState<string>(() => {
-    if (window.location.pathname.startsWith('/developer')) return '/developer/dashboard';
-    return window.location.pathname.startsWith('/builders') ? '/builders' : '/';
+    if (appPath.startsWith('/developer')) return '/developer/dashboard';
+    return appPath.startsWith('/builders') ? '/builders' : '/';
   });
 
   useEffect(() => {
     const handlePopState = () => {
-      if (window.location.pathname.startsWith('/developer')) {
+      const currentAppPath = window.location.pathname.startsWith(basePath)
+        ? window.location.pathname.slice(basePath.length) || '/'
+        : window.location.pathname;
+      if (currentAppPath.startsWith('/developer')) {
         setCurrentPath('/developer/dashboard');
-      } else if (window.location.pathname.startsWith('/builders')) {
+      } else if (currentAppPath.startsWith('/builders')) {
         setCurrentPath('/builders');
       } else {
         setCurrentPath('/');
@@ -30,7 +37,8 @@ export const App: React.FC = () => {
   const handleNavigate = (path: string) => {
     if (path.startsWith('#')) return;
     if (path !== currentPath) {
-      window.history.pushState({}, '', path);
+      const targetPath = basePath ? `${basePath}${path === '/' ? '' : path.slice(1)}` : path;
+      window.history.pushState({}, '', targetPath);
       setCurrentPath(path);
     }
   };

@@ -24,19 +24,19 @@ export const PartnerMarquee: React.FC = () => {
     {
       id: 'northaxis',
       name: 'NorthAxis',
-      logoSrc: '/partners/northaxis.png',
+      logoSrc: `${import.meta.env.BASE_URL}partners/northaxis.png`,
       tag: 'Partner',
     },
     {
       id: 'unihackfest',
       name: 'UniHackfest',
-      logoSrc: '/partners/unihackfest.png',
+      logoSrc: `${import.meta.env.BASE_URL}partners/unihackfest.png`,
       tag: 'Hackathon',
     },
     {
       id: 'vanlang',
       name: 'Van Lang University',
-      logoSrc: '/partners/vanlang.png',
+      logoSrc: `${import.meta.env.BASE_URL}partners/vanlang.png`,
       tag: 'Academic',
     },
     {
