@@ -80,7 +80,9 @@ export const siteConfig = {
   demoVideo: {
     id: '6t4StC59mrQ',
     url: 'https://youtu.be/6t4StC59mrQ?si=pssML1KZW4lWzu_D',
-    embedUrl: 'https://www.youtube.com/embed/6t4StC59mrQ?autoplay=1&rel=0&modestbranding=1',
+    embedUrl: 'https://www.youtube.com/embed/6t4StC59mrQ?enablejsapi=1&rel=0&modestbranding=1&playsinline=1&mute=1',
+    localVideoAsset: '/assets/ned_wallet_demo.mp4',
+    rawLocalVideoAsset: '/assets/N.E.D%20Wallet%20m%E1%BB%9Bi.mp4',
     thumbnail: 'https://img.youtube.com/vi/6t4StC59mrQ/maxresdefault.jpg',
   },
 

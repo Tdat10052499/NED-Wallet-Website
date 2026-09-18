@@ -1,5 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Mail, Copy, Check, ExternalLink, Sparkles, AlertTriangle, Play, X, Maximize2, CheckCircle2, Shield } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  Mail,
+  Copy,
+  Check,
+  ExternalLink,
+  Sparkles,
+  AlertTriangle,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  CheckCircle2,
+  Shield,
+} from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { siteConfig } from '../config/siteConfig';
 import { RevealOnScroll } from './RevealOnScroll';
@@ -8,18 +21,20 @@ export const DemoGuide: React.FC = () => {
   const { t, lang } = useI18n();
   const [copied, setCopied] = useState(false);
 
-  // Video State
+  // Local Video Element Ref & Playback State
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
-  // Scroll Progress (0 = 75% scale, blurred; 1 = 100% scale, crystal clear)
+  // Scroll Progress (0 = 75% scale, blur 12px; 1 = 100% scale, crystal clear)
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Mouse Follower Cursor State
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  // Smooth Cursor Follower: direct DOM ref for 120 FPS zero-rerender performance
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
 
+  // Scroll Progress Calculation with Auto-Play (at 100%) and Auto-Pause (at <= 85%)
   useEffect(() => {
     let ticking = false;
 
@@ -30,14 +45,39 @@ export const DemoGuide: React.FC = () => {
             const rect = containerRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
 
-            // Start zoom when top of frame enters viewport bottom
-            const start = windowHeight * 0.95;
-            // Complete zoom when frame is nicely centered / comfortably viewed
-            const end = windowHeight * 0.22;
+            const containerCenter = rect.top + rect.height / 2;
+            const viewportCenter = windowHeight / 2;
+            const distFromCenter = Math.abs(containerCenter - viewportCenter);
 
-            const raw = (start - rect.top) / (start - end);
-            const clamped = Math.max(0, Math.min(1, raw));
+            // Plateau zone where video remains comfortably at 100% scale
+            const plateau = Math.max(60, windowHeight * 0.12);
+            // Distance over which it shrinks from 100% down to 75%
+            const fadeSpan = Math.max(260, rect.height * 0.45 + windowHeight * 0.28);
+
+            let rawProgress = 1;
+            if (distFromCenter > plateau) {
+              rawProgress = 1 - (distFromCenter - plateau) / fadeSpan;
+            }
+            const clamped = Math.max(0, Math.min(1, rawProgress));
             setScrollProgress(clamped);
+
+            // Scale value: 0.75 (75%) -> 1.00 (100%)
+            const currentScale = 0.75 + 0.25 * clamped;
+
+            // 1. Tự động phát khi kích thước đạt 100% (>= 0.99)
+            if (currentScale >= 0.99) {
+              if (videoRef.current && videoRef.current.paused) {
+                videoRef.current.play().catch(() => {});
+                setIsPlaying(true);
+              }
+            }
+            // 2. Tự động dừng lại khi kích thước giảm xuống tới mức 85% (<= 0.85)
+            else if (currentScale <= 0.85) {
+              if (videoRef.current && !videoRef.current.paused) {
+                videoRef.current.pause();
+                setIsPlaying(false);
+              }
+            }
           }
           ticking = false;
         });
@@ -46,18 +86,51 @@ export const DemoGuide: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll(); // Initial evaluation
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Buttery-Smooth 120 FPS Cursor Movement (direct GPU translate3d, no React re-render)
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    setCursorPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    if (cursorRef.current) {
+      cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    }
+  }, []);
+
+  // Click on video opens the YouTube link in a new tab
+  const handleVideoClick = () => {
+    window.open(siteConfig.demoVideo.url, '_blank', 'noopener,noreferrer');
   };
+
+  const toggleMute = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      const nextMuted = !videoRef.current.muted;
+      videoRef.current.muted = nextMuted;
+      setIsMuted(nextMuted);
+    }
+  }, []);
+
+  const togglePlay = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch(() => {});
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  }, []);
 
   const handleCopyEmail = async () => {
     try {
@@ -68,7 +141,7 @@ export const DemoGuide: React.FC = () => {
         return;
       }
     } catch {
-      // Proceed to fallback
+      // Fallback
     }
 
     try {
@@ -96,7 +169,7 @@ export const DemoGuide: React.FC = () => {
 
   // Dynamic values calculated from scroll:
   // Initial: scale 0.75, blur 12px, opacity 0.6
-  // Scroll in: scale 1.00, blur 0px, opacity 1.0
+  // Scrolled in: scale 1.00, blur 0px, opacity 1.0
   const currentScale = 0.75 + 0.25 * scrollProgress;
   const currentBlur = (1 - scrollProgress) * 12;
   const currentOpacity = 0.6 + 0.4 * scrollProgress;
@@ -171,18 +244,16 @@ export const DemoGuide: React.FC = () => {
           >
             {/* Neo-Brutalist Video Chassis */}
             <div
-              onMouseEnter={() => !isPlaying && setIsHovering(true)}
+              onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
               onMouseMove={handleMouseMove}
-              onClick={() => {
-                if (!isPlaying) setIsPlaying(true);
-              }}
-              className={`relative w-full bg-brand-darkSurface border-4 border-brand-inkBlack rounded-3xl sm:rounded-[36px] overflow-hidden shadow-brutal-xl transition-all ${
-                !isPlaying ? 'cursor-none group' : ''
+              onClick={handleVideoClick}
+              className={`relative w-full bg-brand-darkSurface border-4 border-brand-inkBlack rounded-3xl sm:rounded-[36px] overflow-hidden shadow-brutal-xl transition-all cursor-pointer ${
+                isHovering ? 'cursor-none' : ''
               }`}
             >
-              {/* Window Titlebar (Neo-Brutalist Hardware Controls) */}
-              <div className="bg-brand-inkBlack px-4 sm:px-6 py-3 border-b-3 border-brand-inkBlack flex items-center justify-between">
+              {/* Window Titlebar (Clean Neo-Brutalist Hardware Controls without percentage) */}
+              <div className="bg-brand-inkBlack px-4 sm:px-6 py-3 border-b-3 border-brand-inkBlack flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-rose-500 border border-brand-inkBlack inline-block" />
                   <span className="w-3 h-3 rounded-full bg-amber-400 border border-brand-inkBlack inline-block" />
@@ -192,116 +263,110 @@ export const DemoGuide: React.FC = () => {
                   </span>
                 </div>
 
+                {/* Status indicator: Live / Paused (No percentage numbers) */}
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-brand-lime text-brand-inkBlack font-black text-[10px] uppercase tracking-wider flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-inkBlack animate-pulse" />
-                    <span>Solana Devnet</span>
-                  </span>
-
-                  {isPlaying && (
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsPlaying(false);
-                      }}
-                      className="px-2.5 py-0.5 rounded-lg bg-stone-700 text-stone-200 hover:bg-rose-600 hover:text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors"
-                    >
-                      <X className="w-3 h-3" />
-                      <span>{t.demoGuide.closeVideo}</span>
-                    </button>
+                  {isPlaying ? (
+                    <span className="px-2.5 py-0.5 rounded-full bg-brand-lime text-brand-inkBlack font-black text-[10px] uppercase tracking-wider flex items-center gap-1.5 shadow-brutal-xs">
+                      <span className="w-2 h-2 rounded-full bg-emerald-600 animate-ping" />
+                      <span>{t.demoGuide.autoPlaying}</span>
+                    </span>
+                  ) : (
+                    <span className="px-2.5 py-0.5 rounded-full bg-stone-700 text-stone-300 font-bold text-[10px] tracking-wider flex items-center gap-1">
+                      <span>{t.demoGuide.paused}</span>
+                    </span>
                   )}
+                </div>
+
+                {/* Right Controls: Audio & Play/Pause */}
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={toggleMute}
+                    className={`px-2.5 py-1 rounded-lg font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer border ${
+                      !isMuted
+                        ? 'bg-brand-lime text-brand-inkBlack border-brand-inkBlack shadow-brutal-xs'
+                        : 'bg-stone-800 text-stone-300 hover:bg-stone-700 border-stone-600'
+                    }`}
+                    title={isMuted ? 'Bật âm thanh' : 'Tắt âm thanh'}
+                  >
+                    {!isMuted ? (
+                      <Volume2 className="w-3.5 h-3.5" />
+                    ) : (
+                      <VolumeX className="w-3.5 h-3.5 text-stone-400" />
+                    )}
+                    <span className="hidden sm:inline">
+                      {!isMuted ? t.demoGuide.unmute : t.demoGuide.muted}
+                    </span>
+                  </button>
 
                   <button
                     type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsModalOpen(true);
-                    }}
-                    className="p-1 rounded-lg text-stone-400 hover:text-white transition-colors cursor-pointer"
-                    title="Mở toàn màn hình"
+                    onClick={togglePlay}
+                    className="px-2.5 py-1 rounded-lg bg-stone-800 text-stone-200 hover:bg-stone-700 border border-stone-600 font-bold text-xs flex items-center gap-1 cursor-pointer transition-colors"
+                    title={isPlaying ? 'Tạm dừng' : 'Phát'}
                   >
-                    <Maximize2 className="w-3.5 h-3.5" />
+                    {isPlaying ? (
+                      <>
+                        <Pause className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Tạm dừng</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-3.5 h-3.5 fill-current" />
+                        <span className="hidden sm:inline">Phát</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
 
               {/* Main Video Viewport (16:9 Aspect Ratio) */}
               <div className="relative w-full aspect-video bg-black overflow-hidden flex items-center justify-center">
-                {isPlaying ? (
-                  <iframe
-                    src={siteConfig.demoVideo.embedUrl}
-                    title="N.E.D Wallet Video Walkthrough"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="w-full h-full border-0"
-                  />
-                ) : (
-                  <>
-                    {/* YouTube High-Res Thumbnail with Brutalist Touch */}
-                    <img
-                      src={siteConfig.demoVideo.thumbnail}
-                      alt="N.E.D Wallet Walkthrough Video Thumbnail"
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 opacity-90"
-                      loading="lazy"
-                    />
+                {/* Local Source HTML5 Video Player from Assets */}
+                <video
+                  ref={videoRef}
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  poster={siteConfig.demoVideo.thumbnail}
+                  className="w-full h-full object-cover object-center bg-black"
+                >
+                  <source src={siteConfig.demoVideo.localVideoAsset} type="video/mp4" />
+                  <source src={siteConfig.demoVideo.rawLocalVideoAsset} type="video/mp4" />
+                </video>
 
-                    {/* Subtle Neo-Brutalist Dark Backdrop Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30 pointer-events-none" />
+                {/* Subtle Neo-Brutalist Dark Backdrop Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
-                    {/* Central Play Accent (Breathing Neo-Brutalist Play Button) */}
-                    <div className="absolute z-20 flex flex-col items-center gap-3 pointer-events-none">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-brand-lime text-brand-inkBlack border-3 sm:border-4 border-brand-inkBlack shadow-brutal flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                        <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current translate-x-0.5 text-brand-inkBlack" />
-                      </div>
-
-                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/95 border-2 border-brand-inkBlack rounded-xl shadow-brutal-xs text-xs font-black text-brand-inkBlack">
-                        <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping" />
-                        <span>Bấm để xem video trải nghiệm</span>
-                      </div>
-                    </div>
-
-                    {/* Dynamic Follower Cursor Button [Mở video ->] */}
-                    {isHovering && (
-                      <div
-                        className="pointer-events-none absolute z-40 -translate-x-1/2 -translate-y-1/2 transition-transform duration-75 ease-out"
-                        style={{
-                          left: `${cursorPos.x}px`,
-                          top: `${cursorPos.y}px`,
-                        }}
-                      >
-                        <div className="flex items-center gap-2 bg-brand-lime text-brand-inkBlack border-3 border-brand-inkBlack px-4 py-2.5 rounded-full font-black text-xs sm:text-sm shadow-brutal whitespace-nowrap animate-in zoom-in-75 duration-150 select-none">
-                          <Play className="w-3.5 h-3.5 fill-current text-brand-inkBlack" />
-                          <span>{t.demoGuide.openVideo}</span>
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
+                {/* Buttery-Smooth Follower Cursor Button [Mở video →] */}
+                <div
+                  ref={cursorRef}
+                  className={`pointer-events-none absolute left-0 top-0 z-40 will-change-transform transition-opacity duration-150 ${
+                    isHovering ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  style={{ transform: 'translate3d(-200px, -200px, 0) translate(-50%, -50%)' }}
+                >
+                  <div className="flex items-center gap-2 bg-brand-lime text-brand-inkBlack border-3 border-brand-inkBlack px-4 py-2.5 rounded-full font-black text-xs sm:text-sm shadow-brutal whitespace-nowrap select-none">
+                    <Play className="w-3.5 h-3.5 fill-current text-brand-inkBlack" />
+                    <span>{t.demoGuide.openVideo}</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-brand-inkBlack stroke-[2.5]" />
+                  </div>
+                </div>
               </div>
 
-              {/* Bottom Frame Status Bar */}
+              {/* Bottom Frame Status Bar (No external YouTube link, pure status) */}
               <div className="bg-brand-darkSurface px-4 sm:px-6 py-3 border-t-2 border-brand-lavender/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-bold text-stone-400">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-brand-lime flex-shrink-0" />
                   <span className="text-stone-300">
-                    Hướng dẫn thao tác thực tế trên N.E.D Wallet (Solana Devnet)
+                    Video trải nghiệm thực tế N.E.D Wallet trên Solana Devnet
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3 text-[11px]">
-                  <span className="text-stone-400">Độ phân giải: 1080p HD</span>
-                  <span>•</span>
-                  <a
-                    href={siteConfig.demoVideo.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-brand-lime hover:underline flex items-center gap-1 font-black"
-                  >
-                    <span>Mở trên YouTube</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
+                <div className="flex items-center gap-2 text-stone-400 text-[11px]">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse" />
+                  <span>1080p HD • Chạm để xem trên YouTube</span>
                 </div>
               </div>
             </div>
@@ -421,53 +486,6 @@ export const DemoGuide: React.FC = () => {
           </div>
         </RevealOnScroll>
       </div>
-
-      {/* Fullscreen Cinema Modal Player */}
-      {isModalOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
-          onClick={() => setIsModalOpen(false)}
-        >
-          <div
-            className="relative w-full max-w-5xl bg-brand-darkSurface border-4 border-brand-inkBlack rounded-3xl overflow-hidden shadow-brutal-xl animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="bg-brand-inkBlack px-4 sm:px-6 py-3 border-b-2 border-brand-inkBlack flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-rose-500 border border-brand-inkBlack" />
-                <span className="w-3 h-3 rounded-full bg-amber-400 border border-brand-inkBlack" />
-                <span className="w-3 h-3 rounded-full bg-emerald-400 border border-brand-inkBlack" />
-                <span className="ml-2 text-xs font-black text-brand-offWhite">
-                  N.E.D Wallet — Video Hướng Dẫn Trải Nghiệm
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="px-3 py-1 bg-rose-600 text-white rounded-lg font-black text-xs border border-brand-inkBlack hover:bg-rose-700 transition-colors cursor-pointer flex items-center gap-1 shadow-brutal-xs"
-              >
-                <X className="w-3.5 h-3.5" />
-                <span>{t.demoGuide.closeVideo}</span>
-              </button>
-            </div>
-
-            {/* Modal Video Iframe */}
-            <div className="relative w-full aspect-video bg-black">
-              <iframe
-                src={siteConfig.demoVideo.embedUrl}
-                title="N.E.D Wallet Video Walkthrough Fullscreen"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="w-full h-full border-0"
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
