@@ -15,6 +15,7 @@ export const PhoneTiltWrapper: React.FC<PhoneTiltWrapperProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const floorShadowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -29,11 +30,6 @@ export const PhoneTiltWrapper: React.FC<PhoneTiltWrapperProps> = ({
     let currentRotY = 0;
     let currentTransX = 0;
     let currentTransY = 0;
-
-    let targetShadowX = 10;
-    let targetShadowY = 12;
-    let currentShadowX = 10;
-    let currentShadowY = 12;
 
     let isMouseActive = false;
     let idleTimer: number;
@@ -60,10 +56,6 @@ export const PhoneTiltWrapper: React.FC<PhoneTiltWrapperProps> = ({
       targetTransX = normX * 8;
       targetTransY = normY * 6;
 
-      // Shadow moves opposite to light
-      targetShadowX = 8 - normX * 12;
-      targetShadowY = 10 + normY * 12;
-
       // Resume idle motion if mouse stops moving for 2.5s
       idleTimer = window.setTimeout(() => {
         isMouseActive = false;
@@ -85,28 +77,44 @@ export const PhoneTiltWrapper: React.FC<PhoneTiltWrapperProps> = ({
         targetRotY = idleY;
         targetTransX = Math.sin(clock * 0.8) * 3;
         targetTransY = Math.cos(clock * 1.1) * 4;
-        targetShadowX = 10 + idleY * 0.8;
-        targetShadowY = 12 + idleX * 0.8;
       }
 
-      // Smooth Lerp Damping (0.08 spring-like responsiveness)
+      // Smooth Lerp Damping (0.08 spring responsiveness)
       currentRotX += (targetRotX - currentRotX) * 0.08;
       currentRotY += (targetRotY - currentRotY) * 0.08;
       currentTransX += (targetTransX - currentTransX) * 0.08;
       currentTransY += (targetTransY - currentTransY) * 0.08;
-      currentShadowX += (targetShadowX - currentShadowX) * 0.08;
-      currentShadowY += (targetShadowY - currentShadowY) * 0.08;
 
       if (cardRef.current) {
+        // 3D Perspective Phone Rotation & Translation
         cardRef.current.style.transform = `
           perspective(1200px)
           translate3d(${currentTransX.toFixed(2)}px, ${currentTransY.toFixed(2)}px, 0px)
           rotateX(${currentRotX.toFixed(2)}deg)
           rotateY(${currentRotY.toFixed(2)}deg)
         `;
+
+        // Multi-tier 3D elevation shadow matching rounded-[48px] contour with negative spread to prevent any corner poking
+        const shadowX = (currentTransX * -0.6).toFixed(1);
+        const shadowY = (26 + currentTransY * 0.5).toFixed(1);
         cardRef.current.style.boxShadow = `
-          ${currentShadowX.toFixed(1)}px ${currentShadowY.toFixed(1)}px 0px #111111
+          ${shadowX}px ${shadowY}px 32px -4px rgba(0, 0, 0, 0.7),
+          0px 8px 16px -2px rgba(0, 0, 0, 0.4)
         `;
+      }
+
+      // Dynamic 3D Floor Contact Shadow under the phone
+      if (floorShadowRef.current) {
+        const floorX = (-currentTransX * 1.5).toFixed(1);
+        const floorScaleX = (1 + Math.abs(currentRotY) * 0.015).toFixed(2);
+        const floorScaleY = (1 - Math.abs(currentRotX) * 0.02).toFixed(2);
+        const floorOpacity = Math.max(0.3, Math.min(0.7, 0.55 - currentTransY * 0.02)).toFixed(2);
+
+        floorShadowRef.current.style.transform = `
+          translateX(${floorX}px)
+          scale(${floorScaleX}, ${floorScaleY})
+        `;
+        floorShadowRef.current.style.opacity = floorOpacity;
       }
     };
 
@@ -124,9 +132,17 @@ export const PhoneTiltWrapper: React.FC<PhoneTiltWrapperProps> = ({
       ref={containerRef}
       className={`relative flex items-center justify-center [perspective:1200px] ${className}`}
     >
+      {/* Dynamic 3D Floor Contact Shadow under phone */}
+      <div
+        ref={floorShadowRef}
+        className="absolute -bottom-8 w-[82%] h-12 bg-black/60 rounded-[100%] blur-2xl pointer-events-none transition-transform duration-75 will-change-transform z-0"
+        aria-hidden="true"
+      />
+
+      {/* Main 3D Tilted Card */}
       <div
         ref={cardRef}
-        className="w-full h-full will-change-transform [transform-style:preserve-3d] transition-[shadow] duration-75"
+        className="relative w-full h-full will-change-transform [transform-style:preserve-3d] transition-[shadow] duration-75 rounded-[48px] z-10"
       >
         {children}
       </div>

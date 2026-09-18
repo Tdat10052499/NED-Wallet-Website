@@ -142,14 +142,24 @@ export const AppMockupScreens: React.FC<MockupScreenProps> = ({
   }
 
   return (
-    <div className="w-full h-full bg-brand-warmCream text-brand-inkBlack flex flex-col p-4 sm:p-5 select-none font-sans overflow-hidden relative">
-      {/* Phone Top Status Bar */}
-      <div className="flex items-center justify-between text-[11px] font-extrabold text-stone-700 pb-2 border-b-2 border-brand-inkBlack/15 mb-3">
-        <span>9:41</span>
-        <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-brand-lime border border-brand-inkBlack animate-ping" />
-          <span className="text-[9px] tracking-wider uppercase font-black bg-brand-deepPurple text-brand-offWhite px-1.5 py-0.5 rounded border border-brand-inkBlack shadow-brutal-xs">
-            Solana Devnet
+    <div className="w-full h-full bg-brand-warmCream text-brand-inkBlack flex flex-col p-3.5 sm:p-4 pb-2 select-none font-sans overflow-hidden relative">
+      {/* Phone Top Status Bar with Dynamic Island */}
+      <div className="relative flex items-center justify-between text-[11px] font-extrabold text-stone-700 pb-2 border-b-2 border-brand-inkBlack/15 mb-2.5">
+        <span className="w-14 text-left font-black text-xs text-brand-inkBlack">9:41</span>
+
+        {/* Dynamic Island pill */}
+        <div className="h-5 px-3 bg-brand-inkBlack rounded-full flex items-center justify-center gap-1.5 shadow-sm border border-stone-800">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#111] border border-stone-700 flex items-center justify-center">
+            <span className="w-0.5 h-0.5 rounded-full bg-blue-400" />
+          </div>
+          <span className="text-[8px] font-black tracking-wider text-brand-lime uppercase">Devnet</span>
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        </div>
+
+        <div className="w-14 flex items-center justify-end gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-brand-lime border border-brand-inkBlack" />
+          <span className="text-[9px] uppercase font-black bg-brand-deepPurple text-brand-offWhite px-1.5 py-0.5 rounded border border-brand-inkBlack shadow-brutal-xs">
+            SOL
           </span>
         </div>
       </div>
@@ -592,6 +602,11 @@ export const AppMockupScreens: React.FC<MockupScreenProps> = ({
             </div>
           </div>
         )}
+      </div>
+
+      {/* Phone Home Indicator Bar */}
+      <div className="pt-2 flex justify-center items-center pointer-events-none">
+        <div className="w-28 h-1 bg-brand-inkBlack/30 rounded-full" />
       </div>
     </div>
   );
