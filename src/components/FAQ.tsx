@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
+import { siteConfig } from '../config/siteConfig';
 import { RevealOnScroll } from './RevealOnScroll';
 
 export const FAQ: React.FC = () => {
@@ -23,7 +24,7 @@ export const FAQ: React.FC = () => {
   return (
     <section id="faq" className="scroll-mt-20 relative w-full bg-brand-deepPurple text-brand-offWhite py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack">
       <div className="max-w-4xl mx-auto">
-        {/* Section Header */}
+        {/* Section Header with Mascot Thinking */}
         <RevealOnScroll animation="fade-up">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-darkSurface border-2 border-brand-lavender text-brand-lavender font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
@@ -33,6 +34,19 @@ export const FAQ: React.FC = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-offWhite tracking-tight mb-4">
               {t.faq.headline}
             </h2>
+
+            {/* Mascot Thinking Companion Pill */}
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-brand-darkSurface/90 border-2 border-brand-lavender/40 rounded-2xl shadow-brutal-xs text-left max-w-md mx-auto">
+              <img
+                src={siteConfig.mascots.thinking}
+                alt="NED Teddy thinking"
+                className="w-9 h-9 object-contain drop-shadow flex-shrink-0"
+                loading="lazy"
+              />
+              <span className="text-xs sm:text-sm font-bold text-brand-lavender">
+                {t.mascot.faqTip}
+              </span>
+            </div>
           </div>
         </RevealOnScroll>
 

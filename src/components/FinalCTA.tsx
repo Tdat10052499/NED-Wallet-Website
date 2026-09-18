@@ -44,6 +44,24 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onNavigate }) => {
               {t.finalCta.description}
             </p>
 
+            {/* Mascot Companion Greeting */}
+            <div className="flex items-center justify-center gap-3.5 mb-8">
+              <img
+                src={siteConfig.mascots.waving}
+                alt="NED Teddy waving"
+                className="w-14 h-14 sm:w-16 sm:h-16 object-contain drop-shadow-md animate-float-slow"
+                loading="lazy"
+              />
+              <div className="bg-white/95 border-2 border-brand-inkBlack px-4 py-2 rounded-2xl shadow-brutal-xs text-left max-w-xs sm:max-w-sm">
+                <div className="text-[10px] font-black uppercase tracking-wider text-brand-deepPurple">
+                  Lời nhắn từ NED Teddy
+                </div>
+                <div className="text-xs sm:text-sm font-bold text-brand-inkBlack">
+                  {t.mascot.finalTip}
+                </div>
+              </div>
+            </div>
+
             {/* Actions: Primary Mailto & Secondary Builder Link */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a

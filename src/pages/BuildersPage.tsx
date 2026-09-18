@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Copy, Check, ArrowLeft, Blocks, Users, Sparkles, AlertCircle } from 'lucide-react';
+import { Mail, Copy, Check, ArrowLeft, Blocks, Users, AlertCircle } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
 import { siteConfig } from '../config/siteConfig';
 import { RevealOnScroll } from '../components/RevealOnScroll';
@@ -77,9 +77,22 @@ export const BuildersPage: React.FC<BuildersPageProps> = ({ onNavigate }) => {
               {t.builders.headline}
             </h1>
 
-            <p className="text-lg sm:text-xl text-stone-300 font-medium leading-relaxed mb-8">
+            <p className="text-lg sm:text-xl text-stone-300 font-medium leading-relaxed mb-6">
               {t.builders.subtitle}
             </p>
+
+            {/* Mascot Companion Pill for Builders */}
+            <div className="inline-flex items-center gap-3 px-4 py-2.5 bg-brand-darkSurface border-2 border-brand-lavender/40 rounded-2xl shadow-brutal-xs mb-8">
+              <img
+                src={siteConfig.mascots.proud}
+                alt="NED Teddy proud"
+                className="w-9 h-9 object-contain drop-shadow flex-shrink-0"
+                loading="lazy"
+              />
+              <span className="text-xs sm:text-sm font-bold text-brand-lavender">
+                {t.mascot.buildersTip}
+              </span>
+            </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <a
@@ -268,7 +281,14 @@ export const BuildersPage: React.FC<BuildersPageProps> = ({ onNavigate }) => {
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <RevealOnScroll animation="pop" delay={100}>
           <div className="bg-brand-lime text-brand-inkBlack border-4 border-brand-inkBlack rounded-3xl p-8 sm:p-12 shadow-brutal-xl text-center">
-            <Sparkles className="w-10 h-10 mx-auto mb-4 text-brand-inkBlack" />
+            <div className="flex justify-center mb-4">
+              <img
+                src={siteConfig.mascots.waving}
+                alt="NED Teddy waving"
+                className="w-16 h-16 object-contain drop-shadow"
+                loading="lazy"
+              />
+            </div>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight mb-4">
               {t.builders.ctaHeadline}
             </h2>

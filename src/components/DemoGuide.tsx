@@ -46,20 +46,26 @@ export const DemoGuide: React.FC = () => {
   const steps = [
     {
       num: t.demoGuide.step1Num,
-      title: t.demoGuide.step1Title,
-      desc: t.demoGuide.step1Desc,
+      title: lang === 'vi' ? 'Đăng ký không cần Seedphrase' : 'Seedphrase-less Sign Up',
+      desc: lang === 'vi' ? 'Đăng nhập bảo mật tức thì bằng Email, Google hoặc ví Phantom.' : 'Instant secure sign in using Email, Google, or Phantom wallet.',
+      badge: lang === 'vi' ? 'Email / Google / Phantom' : 'Email / Google / Phantom',
+      screenshot: siteConfig.screenshots.login,
       color: 'bg-brand-lavender',
     },
     {
       num: t.demoGuide.step2Num,
-      title: t.demoGuide.step2Title,
-      desc: t.demoGuide.step2Desc,
+      title: lang === 'vi' ? 'Bảo mật tài khoản bằng SĐT' : 'Phone Security & Recovery',
+      desc: lang === 'vi' ? 'Liên kết số điện thoại để khôi phục ví và nhận lì xì tức thì.' : 'Link your phone number for easy wallet recovery and instant transfers.',
+      badge: lang === 'vi' ? 'Xác thực OTP 2 lớp' : '2-Factor OTP',
+      screenshot: siteConfig.screenshots.phoneSecurity,
       color: 'bg-brand-cyan',
     },
     {
       num: t.demoGuide.step3Num,
-      title: t.demoGuide.step3Title,
-      desc: t.demoGuide.step3Desc,
+      title: lang === 'vi' ? 'Nhận định danh @tên.sol' : 'Claim @name.sol Handle',
+      desc: lang === 'vi' ? 'Tạo định danh cá nhân độc nhất, được tài trợ 100% phí Gas on-chain.' : 'Claim your unique readable handle with 100% sponsored on-chain gas.',
+      badge: lang === 'vi' ? 'Miễn phí Gas 100%' : '100% Gas Free',
+      screenshot: siteConfig.screenshots.handleClaim,
       color: 'bg-brand-lime',
     },
   ];
@@ -70,7 +76,7 @@ export const DemoGuide: React.FC = () => {
       className="scroll-mt-20 relative w-full bg-brand-warmCream text-brand-inkBlack py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack select-none"
     >
       <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
+        {/* Section Header with Mascot Teddy Curious */}
         <RevealOnScroll animation="fade-up">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-lime border-2 border-brand-inkBlack font-black text-xs uppercase tracking-wider mb-4 shadow-brutal-xs">
@@ -80,34 +86,63 @@ export const DemoGuide: React.FC = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-inkBlack tracking-tight mb-4">
               {t.demoGuide.headline}
             </h2>
-            <p className="text-base sm:text-lg text-stone-700 font-medium leading-relaxed">
+            <p className="text-base sm:text-lg text-stone-700 font-medium leading-relaxed mb-6">
               {t.demoGuide.subtitle}
             </p>
+
+            {/* Mascot Tip Pill */}
+            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white border-2 border-brand-inkBlack rounded-2xl shadow-brutal-xs text-xs font-bold text-stone-800">
+              <img
+                src={siteConfig.mascots.curious}
+                alt="Teddy Curious"
+                className="w-8 h-8 object-contain"
+              />
+              <span>{t.mascot.demoTip}</span>
+            </div>
           </div>
         </RevealOnScroll>
 
-        {/* 3 Step Cards Horizontal Row on Desktop, Stacked on Mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        {/* 3 Step Cards with Authentic Onboarding Screenshots */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {steps.map((step, idx) => (
             <RevealOnScroll key={step.num} animation="fade-up" delay={idx * 120} className="h-full">
-              <div className="h-full bg-white border-3 border-brand-inkBlack rounded-3xl p-6 sm:p-7 shadow-brutal card-brutal-interactive flex flex-col justify-between">
+              <div className="h-full bg-white border-3 border-brand-inkBlack rounded-3xl p-5 sm:p-6 shadow-brutal card-brutal-interactive flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between mb-5">
+                  {/* Top Step Header */}
+                  <div className="flex items-center justify-between mb-4">
                     <span
-                      className={`w-12 h-12 rounded-2xl ${step.color} border-2 border-brand-inkBlack flex items-center justify-center font-black text-xl text-brand-inkBlack shadow-brutal-xs`}
+                      className={`w-11 h-11 rounded-2xl ${step.color} border-2 border-brand-inkBlack flex items-center justify-center font-black text-lg text-brand-inkBlack shadow-brutal-xs`}
                     >
                       {step.num}
                     </span>
-                    <span className="text-[10px] font-black uppercase text-stone-500 tracking-wider">
-                      Bước {idx + 1}
+                    <span className="text-[10px] font-black uppercase text-stone-600 tracking-wider px-2.5 py-1 bg-brand-warmCream border border-brand-inkBlack rounded-md">
+                      {step.badge}
                     </span>
                   </div>
-                  <h3 className="text-xl font-black text-brand-inkBlack mb-2">
+
+                  <h3 className="text-lg sm:text-xl font-black text-brand-inkBlack mb-1.5 leading-snug">
                     {step.title}
                   </h3>
-                  <p className="text-sm font-medium text-stone-600 leading-relaxed">
+                  <p className="text-xs sm:text-sm font-medium text-stone-600 leading-relaxed mb-4">
                     {step.desc}
                   </p>
+
+                  {/* Real Onboarding Screenshot Frame */}
+                  <div className="w-full bg-brand-inkBlack rounded-2xl p-2 border-2 border-brand-inkBlack shadow-brutal-xs mt-2">
+                    <div className="w-full rounded-xl overflow-hidden bg-white border border-brand-inkBlack">
+                      <img
+                        src={step.screenshot}
+                        alt={step.title}
+                        className="w-full h-44 sm:h-52 object-cover object-top hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-brand-inkBlack/10 flex items-center justify-between text-[11px] font-black text-stone-500">
+                  <span>Giao diện thử nghiệm</span>
+                  <span className="text-brand-deepPurple font-black">Solana Devnet</span>
                 </div>
               </div>
             </RevealOnScroll>

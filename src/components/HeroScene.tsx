@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { ArrowRight, Sparkles, Shield, Cpu, ChevronRight } from 'lucide-react';
 import { useI18n } from '../i18n/I18nContext';
+import { siteConfig } from '../config/siteConfig';
 import { AppMockupScreens } from '../assets/AppMockupScreens';
 import { PhoneTiltWrapper } from './PhoneTiltWrapper';
 import { RevealOnScroll } from './RevealOnScroll';
@@ -25,6 +26,17 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const [webGlSupported, setWebGlSupported] = useState(true);
+
+  // Phone screen showcase state: 'sim' (interactive simulator) or 'real' (real app screenshots)
+  const [screenMode, setScreenMode] = useState<'sim' | 'real'>('sim');
+  const [currentRealIndex, setCurrentRealIndex] = useState(0);
+
+  const realScreens = [
+    { id: 'home', label: 'Trang chủ', title: 'Ví N.E.D - Màn hình chính', src: siteConfig.screenshots.dashboardHome },
+    { id: 'transfer', label: 'Chuyển tiền', title: 'Trung tâm chuyển tiền', src: siteConfig.screenshots.transferCenter },
+    { id: 'lucky', label: 'Tung đồng xu', title: 'Phòng Lì Xì Tung Đồng Xu', src: siteConfig.screenshots.luckyCoin },
+    { id: 'split', label: 'Shake & Split', title: 'Lắc chia tiền', src: siteConfig.screenshots.shakeSplit },
+  ];
 
   // Full-section Three.js floating cubes background
   useEffect(() => {
@@ -273,6 +285,23 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
         {/* Left Column: Headlines, CTAs, Trust Points */}
         <div className="lg:col-span-7 flex flex-col items-start text-left">
+          {/* Mascot Companion Pill */}
+          <RevealOnScroll animation="fade-up" delay={40}>
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-darkSurface border-2 border-brand-lavender text-brand-offWhite mb-5 shadow-brutal-xs">
+              <img
+                src={siteConfig.mascots.waving}
+                alt="NED Teddy"
+                className="w-7 h-7 object-contain flex-shrink-0 -my-1"
+              />
+              <span className="text-xs font-black tracking-wide text-brand-lavender">
+                N.E.D Teddy
+              </span>
+              <span className="text-stone-400 text-xs">•</span>
+              <span className="text-xs font-bold text-stone-200">
+                {t.mascot.heroCompanion}
+              </span>
+            </div>
+          </RevealOnScroll>
 
           {/* Main Headline */}
           <RevealOnScroll animation="fade-up" delay={80}>
@@ -330,15 +359,85 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
           </RevealOnScroll>
         </div>
 
-        {/* Right Column: Fully Interactive Phone Mockup with 3D Cursor Tracking */}
+        {/* Right Column: Interactive Phone Mockup & Real App Showcase with Mascot */}
         <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
           <RevealOnScroll animation="pop" delay={180}>
+            {/* Mascot Teddy Peeking from top-left of phone */}
+            <div className="absolute -top-12 -left-6 sm:-left-10 z-40 flex items-center gap-2 pointer-events-none animate-floatBob">
+              <img
+                src={siteConfig.mascots.waving}
+                alt="NED Teddy Waving Mascot"
+                className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
+                loading="eager"
+              />
+              <div className="bg-brand-paleYellow text-brand-inkBlack border-2 border-brand-inkBlack rounded-2xl px-3 py-1.5 shadow-brutal-xs text-xs font-black hidden sm:flex items-center gap-1">
+                <span>Chào bạn! Mình là Teddy 💜</span>
+              </div>
+            </div>
+
             <PhoneTiltWrapper className="w-[310px] xs:w-[330px] sm:w-[350px] h-[640px] sm:h-[670px]">
               {/* Phone Frame Container */}
               <div className="relative w-full h-full rounded-[48px] bg-brand-inkBlack border-4 border-brand-inkBlack p-2.5 sm:p-3 [transform-style:preserve-3d] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15)]">
+                {/* Mode Selector Pill inside Phone or at Top */}
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 flex items-center bg-brand-inkBlack/90 border border-brand-lavender/30 rounded-full p-0.5 shadow-brutal-xs">
+                  <button
+                    type="button"
+                    onClick={() => setScreenMode('sim')}
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-black transition-all cursor-pointer ${
+                      screenMode === 'sim'
+                        ? 'bg-brand-lime text-brand-inkBlack shadow-brutal-xs'
+                        : 'text-stone-300 hover:text-white'
+                    }`}
+                  >
+                    Bấm thử (Sim)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setScreenMode('real')}
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-black transition-all cursor-pointer ${
+                      screenMode === 'real'
+                        ? 'bg-brand-cyan text-brand-inkBlack shadow-brutal-xs'
+                        : 'text-stone-300 hover:text-white'
+                    }`}
+                  >
+                    Giao diện thật
+                  </button>
+                </div>
+
                 {/* Phone Screen Container with Full User Interaction */}
                 <div className="relative w-full h-full rounded-[36px] overflow-hidden border-2 border-brand-inkBlack bg-brand-warmCream">
-                  <AppMockupScreens activeTab="send" />
+                  {screenMode === 'sim' ? (
+                    <AppMockupScreens activeTab="send" />
+                  ) : (
+                    <div className="w-full h-full flex flex-col justify-between bg-[#0e0625] text-white pt-10 select-none">
+                      {/* Real App Screenshot Showcase */}
+                      <div className="relative flex-1 overflow-hidden">
+                        <img
+                          src={realScreens[currentRealIndex].src}
+                          alt={realScreens[currentRealIndex].title}
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
+
+                      {/* Screen Navigation Strip */}
+                      <div className="p-2.5 bg-brand-inkBlack/95 border-t-2 border-brand-inkBlack flex items-center justify-between gap-1 z-20">
+                        {realScreens.map((screen, idx) => (
+                          <button
+                            key={screen.id}
+                            type="button"
+                            onClick={() => setCurrentRealIndex(idx)}
+                            className={`flex-1 py-1 px-1 rounded-lg text-[9px] font-black border transition-all truncate cursor-pointer ${
+                              currentRealIndex === idx
+                                ? 'bg-brand-lavender text-brand-inkBlack border-brand-inkBlack shadow-brutal-xs'
+                                : 'bg-brand-darkSurface text-stone-300 border-stone-700 hover:bg-stone-800'
+                            }`}
+                          >
+                            {screen.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Floating Neo-Brutalist Callout Pill (Top Right - 3D Pop Out) */}
@@ -352,7 +451,7 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
                 {/* Floating Neo-Brutalist Interactive Badge (Bottom Left - 3D Pop Out) */}
                 <div className="absolute -bottom-3.5 left-2 sm:left-4 pointer-events-none z-30 [transform:translateZ(28px)]">
                   <div className="bg-brand-cyan text-brand-inkBlack border-3 border-brand-inkBlack rounded-2xl px-3 sm:px-3.5 py-1.5 shadow-brutal font-black text-xs flex items-center gap-1.5">
-                    <span>Bấm trực tiếp để thử nghiệm</span>
+                    <span>{screenMode === 'sim' ? 'Bấm trực tiếp để thử nghiệm' : 'Màn hình ứng dụng thực tế'}</span>
                   </div>
                 </div>
               </div>

@@ -11,8 +11,54 @@ export const siteConfig = {
 
   // Asset paths
   logoAsset: '/assets/ned-logo.jpg',
-  homeScreenshotAsset: '/assets/app-screenshot.png',
-  sendScreenshotAsset: '', // Prepared for future direct send flow screenshot; when empty, uses labeled illustration
+  appLogoAsset: '/assets/brand/logo_app.jpg',
+  brandNedLogo: '/assets/brand/logo_ned_wallet.jpg',
+  brandColors: '/assets/brand/brand_colors.jpg',
+
+  // Mascot Assets (16 biểu cảm của chú gấu N.E.D Teddy)
+  mascots: {
+    waving: '/assets/brand/mascot/waving.png',
+    happy: '/assets/brand/mascot/happy.png',
+    proud: '/assets/brand/mascot/proud.png',
+    exciting: '/assets/brand/mascot/exciting.png',
+    curious: '/assets/brand/mascot/curious.png',
+    thinking: '/assets/brand/mascot/thinking.png',
+    laughing: '/assets/brand/mascot/laughing.png',
+    surprised: '/assets/brand/mascot/surprised.png',
+    sleepy: '/assets/brand/mascot/sleepy.png',
+    scared: '/assets/brand/mascot/scared.png',
+    sad: '/assets/brand/mascot/sad.png',
+    angry: '/assets/brand/mascot/angry.png',
+    confused: '/assets/brand/mascot/confused.png',
+    crying: '/assets/brand/mascot/crying.png',
+    embarrassed: '/assets/brand/mascot/embarrassed.png',
+    frustrated: '/assets/brand/mascot/frustrated.png',
+  },
+
+  // App Screenshots (14 màn hình ứng dụng thực tế trên Solana Devnet)
+  screenshots: {
+    // Main Hubs & Features
+    dashboardHome: '/assets/screenshots/app_dashboard_home.png',
+    analyticsCashflow: '/assets/screenshots/app_analytics_cashflow.png',
+    transferCenter: '/assets/screenshots/app_transfer_center.png',
+    transferPhone: '/assets/screenshots/app_transfer_phone.png',
+    shakeSplit: '/assets/screenshots/app_shake_split.png',
+    luckyCoin: '/assets/screenshots/app_lucky_coin.png',
+    miniappsHub: '/assets/screenshots/app_miniapps_hub.png',
+
+    // Onboarding Flow
+    login: '/assets/screenshots/app_login.png',
+    register: '/assets/screenshots/app_register.png',
+    emailOtp: '/assets/screenshots/app_email_otp.png',
+    phoneSecurity: '/assets/screenshots/app_phone_security.png',
+    phoneOtp: '/assets/screenshots/app_phone_otp.png',
+    handleClaim: '/assets/screenshots/app_handle_claim.png',
+    welcomeSuccess: '/assets/screenshots/app_welcome_success.png',
+  },
+
+  // Backward-compatible aliases
+  homeScreenshotAsset: '/assets/screenshots/app_dashboard_home.png',
+  sendScreenshotAsset: '/assets/screenshots/app_transfer_phone.png',
 
   // Demo request mailto
   demoMailSubject: 'N.E.D Wallet — Demo request',
