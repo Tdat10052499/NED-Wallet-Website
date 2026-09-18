@@ -4,15 +4,23 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
 import { BuildersPage } from './pages/BuildersPage';
+import { DeveloperDashboardPage } from './pages/DeveloperDashboardPage';
 
 export const App: React.FC = () => {
   const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (window.location.pathname.startsWith('/developer')) return '/developer/dashboard';
     return window.location.pathname.startsWith('/builders') ? '/builders' : '/';
   });
 
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname.startsWith('/builders') ? '/builders' : '/');
+      if (window.location.pathname.startsWith('/developer')) {
+        setCurrentPath('/developer/dashboard');
+      } else if (window.location.pathname.startsWith('/builders')) {
+        setCurrentPath('/builders');
+      } else {
+        setCurrentPath('/');
+      }
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -35,7 +43,9 @@ export const App: React.FC = () => {
 
         {/* Page Content View */}
         <div className="flex-grow">
-          {currentPath === '/builders' ? (
+          {currentPath === '/developer/dashboard' ? (
+            <DeveloperDashboardPage onNavigate={handleNavigate} />
+          ) : currentPath === '/builders' ? (
             <BuildersPage onNavigate={handleNavigate} />
           ) : (
             <HomePage onNavigate={handleNavigate} />

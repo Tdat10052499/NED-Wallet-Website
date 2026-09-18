@@ -76,6 +76,14 @@ export const siteConfig = {
    */
   demoUrl: '',
 
+  // Demo Video Walkthrough
+  demoVideo: {
+    id: '6t4StC59mrQ',
+    url: 'https://youtu.be/6t4StC59mrQ?si=pssML1KZW4lWzu_D',
+    embedUrl: 'https://www.youtube.com/embed/6t4StC59mrQ?autoplay=1&rel=0&modestbranding=1',
+    thumbnail: 'https://img.youtube.com/vi/6t4StC59mrQ/maxresdefault.jpg',
+  },
+
   // Product capabilities
   stablecoinToken: 'USDC (Solana Devnet)',
   supportedIdentities: ['Số điện thoại / Phone number', 'Mã QR / QR Code', 'Địa chỉ ví / Wallet address'],
