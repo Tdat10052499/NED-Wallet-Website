@@ -33,6 +33,8 @@ jobs:
           VITE_BASE_PATH: /NED-Wallet-Website/
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Preserve SPA routes
         run: cp dist/index.html dist/404.html
       - name: Upload Pages artifact
