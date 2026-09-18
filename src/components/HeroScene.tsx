@@ -74,18 +74,18 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       container.appendChild(renderer.domElement);
 
-      // Native Three.js 3D Depth Fog (Zero GPU overhead, organically softens cubes into background)
-      scene.fog = new THREE.Fog(0x0e0625, 7, 22);
+      // Native Three.js 3D Depth Fog (Organically softens cubes in distance without GPU overhead)
+      scene.fog = new THREE.Fog(0x0e0625, 12, 32);
 
-      // Neo-brutalist Lighting (Matte & High Contrast)
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+      // Neo-brutalist Lighting (Crisp highlights and contrast)
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
       scene.add(ambientLight);
 
-      const dirLight1 = new THREE.DirectionalLight(0xb497f0, 1.4);
+      const dirLight1 = new THREE.DirectionalLight(0xb497f0, 1.8);
       dirLight1.position.set(10, 15, 10);
       scene.add(dirLight1);
 
-      const dirLight2 = new THREE.DirectionalLight(0x08cee3, 1.0);
+      const dirLight2 = new THREE.DirectionalLight(0x08cee3, 1.3);
       dirLight2.position.set(-10, -10, 8);
       scene.add(dirLight2);
 
@@ -99,33 +99,33 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
         0xf0ebdd, // Warm cream
       ];
 
-      // Edge material with subtle opacity so wireframes do not distract from content
+      // Edge material with distinct black neo-brutalist wireframe outline
       const edgeMaterial = new THREE.LineBasicMaterial({
         color: 0x111111,
         transparent: true,
-        opacity: 0.35,
+        opacity: 0.65,
       });
       materialsToDispose.push(edgeMaterial);
 
-      // Scatter 36 floating cubes across the ENTIRE Hero section for rich visual depth
-      const cubeCount = 36;
+      // Scatter 65 floating cubes across the ENTIRE Hero section for rich visual depth
+      const cubeCount = 65;
       for (let i = 0; i < cubeCount; i++) {
         // Size variation
-        const sizeX = 0.55 + Math.random() * 0.7;
-        const sizeY = 0.55 + Math.random() * 0.7;
-        const sizeZ = 0.55 + Math.random() * 0.7;
+        const sizeX = 0.5 + Math.random() * 0.75;
+        const sizeY = 0.5 + Math.random() * 0.75;
+        const sizeZ = 0.5 + Math.random() * 0.75;
 
         const geo = new THREE.BoxGeometry(sizeX, sizeY, sizeZ);
         geometriesToDispose.push(geo);
 
         const color = colorPalette[i % colorPalette.length];
-        // Semi-transparent ambient material so cubes remain gentle background elements
+        // Vibrant, clear neo-brutalist material
         const mat = new THREE.MeshStandardMaterial({
           color: color,
-          roughness: 0.55,
-          metalness: 0.05,
+          roughness: 0.4,
+          metalness: 0.08,
           transparent: true,
-          opacity: 0.5,
+          opacity: 0.72,
         });
         materialsToDispose.push(mat);
 
@@ -140,9 +140,9 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
         // Position across entire section (left, right, top, bottom, depth)
         // Spread evenly across the full width
         const colRatio = i / cubeCount;
-        const posX = -14 + colRatio * 28 + (Math.random() - 0.5) * 4;
-        const posY = -6 + Math.random() * 12;
-        const posZ = -6 + Math.random() * 8;
+        const posX = -16 + colRatio * 32 + (Math.random() - 0.5) * 4;
+        const posY = -7 + Math.random() * 14;
+        const posZ = -6 + Math.random() * 10;
 
         mesh.position.set(posX, posY, posZ);
         mesh.rotation.set(
@@ -263,9 +263,9 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
         />
       )}
 
-      {/* 2. High-Performance Text Contrast Shield (Zero GPU blur overhead, keeps headline 100% crisp & readable) */}
+      {/* 2. High-Performance Text Contrast Shield (Keeps headline 100% crisp & readable while letting 3D cubes shine through) */}
       <div
-        className="absolute inset-0 bg-gradient-to-r from-brand-deepPurple/90 via-brand-deepPurple/55 to-brand-deepPurple/20 pointer-events-none z-0"
+        className="absolute inset-0 bg-gradient-to-r from-brand-deepPurple/80 via-brand-deepPurple/40 to-transparent pointer-events-none z-0"
         aria-hidden="true"
       />
 
@@ -362,17 +362,17 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
         {/* Right Column: Interactive Phone Mockup & Real App Showcase with Mascot */}
         <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
           <RevealOnScroll animation="pop" delay={180}>
-            {/* Mascot Teddy Peeking from top-left of phone */}
-            <div className="absolute -top-12 -left-6 sm:-left-10 z-40 flex items-center gap-2 pointer-events-none animate-floatBob">
+            {/* Mascot Teddy floating on the right side of phone (Zero overlap with top controls/badges) */}
+            <div className="absolute bottom-24 -right-6 sm:-right-12 z-40 flex flex-col items-center gap-1.5 pointer-events-none animate-floatBob">
+              <div className="bg-brand-paleYellow text-brand-inkBlack border-2 border-brand-inkBlack rounded-2xl px-3 py-1.5 shadow-brutal-xs text-xs font-black flex items-center gap-1 whitespace-nowrap">
+                <span>Chào bạn! Mình là Teddy 💜</span>
+              </div>
               <img
                 src={siteConfig.mascots.waving}
                 alt="NED Teddy Waving Mascot"
                 className="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.4)]"
                 loading="eager"
               />
-              <div className="bg-brand-paleYellow text-brand-inkBlack border-2 border-brand-inkBlack rounded-2xl px-3 py-1.5 shadow-brutal-xs text-xs font-black hidden sm:flex items-center gap-1">
-                <span>Chào bạn! Mình là Teddy 💜</span>
-              </div>
             </div>
 
             <PhoneTiltWrapper className="w-[310px] xs:w-[330px] sm:w-[350px] h-[640px] sm:h-[670px]">
