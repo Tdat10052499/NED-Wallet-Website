@@ -59,18 +59,21 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
         powerPreference: 'high-performance',
       });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       container.appendChild(renderer.domElement);
 
+      // Native Three.js 3D Depth Fog (Zero GPU overhead, organically softens cubes into background)
+      scene.fog = new THREE.Fog(0x0e0625, 7, 22);
+
       // Neo-brutalist Lighting (Matte & High Contrast)
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
       scene.add(ambientLight);
 
-      const dirLight1 = new THREE.DirectionalLight(0xb497f0, 1.6);
+      const dirLight1 = new THREE.DirectionalLight(0xb497f0, 1.4);
       dirLight1.position.set(10, 15, 10);
       scene.add(dirLight1);
 
-      const dirLight2 = new THREE.DirectionalLight(0x08cee3, 1.2);
+      const dirLight2 = new THREE.DirectionalLight(0x08cee3, 1.0);
       dirLight2.position.set(-10, -10, 8);
       scene.add(dirLight2);
 
@@ -84,30 +87,33 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
         0xf0ebdd, // Warm cream
       ];
 
-      // Edge material for thick black neo-brutal borders
+      // Edge material with subtle opacity so wireframes do not distract from content
       const edgeMaterial = new THREE.LineBasicMaterial({
         color: 0x111111,
-        linewidth: 2,
+        transparent: true,
+        opacity: 0.35,
       });
       materialsToDispose.push(edgeMaterial);
 
-      // Scatter 18 floating cubes across the ENTIRE Hero section
-      // Span X: -13 to +13, Span Y: -6 to +6, Span Z: -4 to +4
-      const cubeCount = 18;
+      // Scatter 36 floating cubes across the ENTIRE Hero section for rich visual depth
+      const cubeCount = 36;
       for (let i = 0; i < cubeCount; i++) {
         // Size variation
-        const sizeX = 0.7 + Math.random() * 0.9;
-        const sizeY = 0.7 + Math.random() * 0.9;
-        const sizeZ = 0.7 + Math.random() * 0.9;
+        const sizeX = 0.55 + Math.random() * 0.7;
+        const sizeY = 0.55 + Math.random() * 0.7;
+        const sizeZ = 0.55 + Math.random() * 0.7;
 
         const geo = new THREE.BoxGeometry(sizeX, sizeY, sizeZ);
         geometriesToDispose.push(geo);
 
         const color = colorPalette[i % colorPalette.length];
+        // Semi-transparent ambient material so cubes remain gentle background elements
         const mat = new THREE.MeshStandardMaterial({
           color: color,
-          roughness: 0.35,
+          roughness: 0.55,
           metalness: 0.05,
+          transparent: true,
+          opacity: 0.5,
         });
         materialsToDispose.push(mat);
 
@@ -122,9 +128,9 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
         // Position across entire section (left, right, top, bottom, depth)
         // Spread evenly across the full width
         const colRatio = i / cubeCount;
-        const posX = -12 + colRatio * 24 + (Math.random() - 0.5) * 3;
-        const posY = -5 + Math.random() * 10;
-        const posZ = -5 + Math.random() * 7;
+        const posX = -14 + colRatio * 28 + (Math.random() - 0.5) * 4;
+        const posY = -6 + Math.random() * 12;
+        const posZ = -6 + Math.random() * 8;
 
         mesh.position.set(posX, posY, posZ);
         mesh.rotation.set(
@@ -137,11 +143,11 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
 
         floatingCubes.push({
           mesh,
-          rotSpeedX: (Math.random() - 0.5) * 0.012,
-          rotSpeedY: (Math.random() - 0.5) * 0.015,
-          rotSpeedZ: (Math.random() - 0.5) * 0.01,
-          floatSpeed: 0.8 + Math.random() * 1.2,
-          floatAmplitude: 0.3 + Math.random() * 0.4,
+          rotSpeedX: (Math.random() - 0.5) * 0.014,
+          rotSpeedY: (Math.random() - 0.5) * 0.016,
+          rotSpeedZ: (Math.random() - 0.5) * 0.012,
+          floatSpeed: 0.7 + Math.random() * 1.3,
+          floatAmplitude: 0.25 + Math.random() * 0.45,
           initialY: posY,
         });
       }
@@ -236,7 +242,7 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
       ref={sectionRef}
       className="relative w-full min-h-[720px] bg-brand-deepPurple text-brand-offWhite pt-10 pb-20 sm:pt-16 sm:pb-28 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-inkBlack overflow-hidden flex items-center"
     >
-      {/* 1. Full-Section Three.js 3D Floating Cubes Canvas (Covers entire Hero!) */}
+      {/* 1. Full-Section Three.js 3D Floating Cubes Canvas (Ultra-smooth 60FPS) */}
       {webGlSupported && (
         <div
           ref={canvasContainerRef}
@@ -245,7 +251,13 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
         />
       )}
 
-      {/* 2. Background Neo-Brutalist Grid Overlay */}
+      {/* 2. High-Performance Text Contrast Shield (Zero GPU blur overhead, keeps headline 100% crisp & readable) */}
+      <div
+        className="absolute inset-0 bg-gradient-to-r from-brand-deepPurple/90 via-brand-deepPurple/55 to-brand-deepPurple/20 pointer-events-none z-0"
+        aria-hidden="true"
+      />
+
+      {/* 3. Background Neo-Brutalist Grid Overlay */}
       <div
         className="absolute inset-0 opacity-15 pointer-events-none z-0"
         style={{
@@ -261,13 +273,6 @@ export const HeroScene: React.FC<HeroSceneProps> = () => {
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
         {/* Left Column: Headlines, CTAs, Trust Points */}
         <div className="lg:col-span-7 flex flex-col items-start text-left">
-          {/* Status Badge */}
-          <RevealOnScroll animation="fade-up" delay={0}>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-darkSurface border-2 border-brand-lavender text-brand-lavender text-xs font-black uppercase tracking-wider mb-6 shadow-brutal-xs">
-              <span className="w-2.5 h-2.5 rounded-full bg-brand-lime border border-brand-inkBlack animate-ping" />
-              <span>{t.hero.statusBadge}</span>
-            </div>
-          </RevealOnScroll>
 
           {/* Main Headline */}
           <RevealOnScroll animation="fade-up" delay={80}>

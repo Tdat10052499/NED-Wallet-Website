@@ -1,5 +1,6 @@
 import React from 'react';
 import { HeroScene } from '../components/HeroScene';
+import { PartnerMarquee } from '../components/PartnerMarquee';
 import { CoreActionsStrip } from '../components/CoreActionsStrip';
 import { SendFeature } from '../components/SendFeature';
 import { AssetOverview } from '../components/AssetOverview';
@@ -18,7 +19,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       {/* 1. Hero Section (Cinematic 3D phone & value proposition) */}
       <HeroScene onNavigate={onNavigate} />
 
-      {/* 2. Core Actions Strip (#experience - Dải ba thao tác: Nhận / Chuyển / Theo dõi) */}
+      {/* 2. Partner & Ecosystem Logo Marquee (Chạy trượt tương tác theo cuộn & kéo) */}
+      <PartnerMarquee />
+
+      {/* 3. Core Actions Strip (#experience - Dải ba thao tác: Nhận / Chuyển / Theo dõi) */}
       <CoreActionsStrip />
 
       {/* 3. Send Feature (#send - Chọn người nhận qua SĐT, QR, Ví) */}

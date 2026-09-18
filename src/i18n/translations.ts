@@ -21,6 +21,11 @@ export const translations = {
       trustPill2: 'Solana Devnet (USDC)',
       trustPill3: 'Thử nghiệm qua Expo',
     },
+    marquee: {
+      tag: 'Mạng lưới & Đối tác đồng hành',
+      badge: 'Hệ sinh thái',
+      scrollHint: 'Lăn chuột hoặc kéo để trượt',
+    },
     coreActions: {
       badge: 'Thao tác cốt lõi',
       headline: 'Đơn giản hóa quản lý stablecoin',
@@ -176,6 +181,11 @@ export const translations = {
       trustPill1: 'Familiar Interactions',
       trustPill2: 'Solana Devnet (USDC)',
       trustPill3: 'Expo Mobile Preview',
+    },
+    marquee: {
+      tag: 'Network & Ecosystem Partners',
+      badge: 'Ecosystem',
+      scrollHint: 'Scroll or drag to explore',
     },
     coreActions: {
       badge: 'Core Actions',
